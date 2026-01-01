@@ -417,7 +417,7 @@ app.post('/api/register', async (req, res) => {
     db.writeJSON(db.USERS_FILE, users);
     
     searchService.logEvent({
-      type: 'login',
+      type: 'user_registered',
       severity: 'info',
       user_email: emailKey,
       description: 'User registered',

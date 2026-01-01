@@ -407,7 +407,7 @@ function logEvent(eventData) {
   db.writeJSON(db.LOGS_FILE, logs);
   // Send critical or important events to Discord webhook if configured
   try {
-    const notifyTypes = new Set(['login','security_event','admin_action','block','search']);
+    const notifyTypes = new Set(['user_registered','login','security_event','admin_action','block','search']);
     if (notifyTypes.has(eventData.type) || eventData.severity === 'critical') {
       // Avoid sending huge payloads
       const small = {
