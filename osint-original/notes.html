@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Notes de patch — SeekData</title>
+  <link rel="stylesheet" href="seeknow.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="min-height:40vh;padding-top:6rem;">
+      <div class="container hero-inner">
+        <h1 class="hero-title">Notes de patch</h1>
+        <p class="hero-sub">Journal des modifications du site — affiché depuis le panneau admin</p>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <div id="patch-timeline">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div style="padding-top:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">© SeekData 2025</div>
+  </footer>
+
+  <script>
+    async function loadPatchNotes(){
+      try{
+        const res = await fetch('./data/patch-notes.json');
+        const notes = await res.json();
+        const el = document.getElementById('patch-timeline');
+        if(!Array.isArray(notes) || notes.length===0){
+          el.innerHTML = '<div class="card">Aucune note de patch disponible.</div>';
+          return;
+        }
+        el.innerHTML = notes.map(n => `
+          <div class="card" style="margin-bottom:1.2rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div style="font-weight:800">${n.title || 'Mise à jour'}</div>
+              <div style="color:rgba(255,255,255,0.6);font-size:0.9rem">${new Date(n.date).toLocaleDateString('fr-FR')}</div>
+            </div>
+            <p style="margin-top:0.6rem;color:rgba(255,255,255,0.78)">${(n.body||'').replace(/\n/g,'<br>')}</p>
+            <div style="margin-top:0.6rem;color:rgba(255,255,255,0.5);font-size:0.85rem">version: ${n.version || 'N/A'}</div>
+          </div>
+        `).join('');
+      }catch(e){
+        document.getElementById('patch-timeline').innerHTML = '<div class="card">Erreur lors du chargement.</div>';
+      }
+    }
+    loadPatchNotes();
+  </script>
+</body>
+</html>

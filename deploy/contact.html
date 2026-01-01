@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — SeekData</title>
+  <link rel="stylesheet" href="seeknow.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" style="min-height:50vh">
+      <div class="container hero-inner">
+        <h1 class="hero-title">Nous contacter</h1>
+        <p class="hero-sub">Des questions ? Nous sommes là pour vous aider.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT FORM & INFO -->
+    <section class="features">
+      <div class="container">
+        <div class="account-grid" style="max-width:900px;margin:0 auto">
+          <form id="contact-form" class="account-form">
+            <h3>Envoyez-nous un message</h3>
+            <div class="form-group">
+              <label for="contact-name">Nom</label>
+              <input id="contact-name" name="name" type="text" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email</label>
+              <input id="contact-email" name="email" type="email" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-subject">Sujet</label>
+              <input id="contact-subject" name="subject" type="text" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-message">Message</label>
+              <textarea id="contact-message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="form-submit">Envoyer</button>
+            <div class="form-msg"></div>
+          </form>
+
+          <div class="account-form">
+            <h3>Informations de contact</h3>
+            <div style="margin-bottom:1rem">
+              <h4 style="margin:0 0 0.3rem;color:rgba(255,255,255,0.9)">Support client</h4>
+              <p style="margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem">support@SeekData.example</p>
+              <p style="margin:0.5rem 0 0;color:rgba(255,255,255,0.75);font-size:0.95rem">+33 1 23 45 67 89</p>
+            </div>
+            <div style="margin-bottom:1rem">
+              <h4 style="margin:0 0 0.3rem;color:rgba(255,255,255,0.9)">Partenariats & ventes</h4>
+              <p style="margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem">sales@SeekData.example</p>
+            </div>
+            <div style="margin-bottom:1rem">
+              <h4 style="margin:0 0 0.3rem;color:rgba(255,255,255,0.9)">Signalement de sécurité</h4>
+              <p style="margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem">security@SeekData.example</p>
+            </div>
+            <div>
+              <h4 style="margin:0 0 0.3rem;color:rgba(255,255,255,0.9)">Adresse</h4>
+              <p style="margin:0;color:rgba(255,255,255,0.75);font-size:0.95rem">SeekData HQ<br>Paris, France</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Questions fréquentes</h2>
+          <p>Les réponses aux questions les plus courantes</p>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <h3>Combien de temps faut-il pour traiter une demande ?</h3>
+            <p>Les demandes de support sont traitées dans les 24 heures (plan Free) à 2 heures (plan Premium et Entreprise).</p>
+          </div>
+          <div class="card">
+            <h3>Y a-t-il un chat en direct ?</h3>
+            <p>Les clients Premium et Entreprise ont accès à un chat de support prioritaire. Les clients Free peuvent utiliser la messagerie.</p>
+          </div>
+          <div class="card">
+            <h3>Comment signaler une vulnérabilité de sécurité ?</h3>
+            <p>Contactez security@SeekData.example en détail. Nous récompensons les chercheurs responsables.</p>
+          </div>
+          <div class="card">
+            <h3>Acceptez-vous les demandes d'intégration API ?</h3>
+            <p>Oui, les clients Entreprise peuvent demander une intégration API personnalisée. Contactez sales@SeekData.example.</p>
+          </div>
+          <div class="card">
+            <h3>Proposez-vous une formation OSINT ?</h3>
+            <p>Oui, nous proposons des webinaires gratuits et des formations avancées payantes pour les abonnés Premium.</p>
+          </div>
+          <div class="card">
+            <h3>Comment puis-je annuler mon abonnement ?</h3>
+            <p>Vous pouvez annuler à tout moment dans vos paramètres de compte. Aucun frais supplémentaire.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>SeekData</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem">OSINT et cybersécurité</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding-top:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">© SeekData 2025 — Prototype OSINT & cybersécurité</div>
+  </footer>
+
+  <script src="assets/js/seeknow.js"></script>
+  <script>
+    function scrollToSection(selector){
+      const el = document.querySelector(selector);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+      if(selector === '#account-register'){
+        window.location.href = 'register.html';
+      } else {
+        window.location.href = 'seeknow.html' + selector;
+      }
+    }
+  </script>
+</body>
+</html>

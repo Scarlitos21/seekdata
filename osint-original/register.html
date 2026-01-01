@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>S'inscrire — SeekData</title>
+  <link rel="stylesheet" href="seeknow.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid-mask" aria-hidden="true"></div>
+
+  <main>
+    <section class="register-page">
+      <div class="register-container">
+        <!-- LEFT SIDE: Features -->
+        <div class="register-left">
+          <h1 class="register-title">Rejoignez SeekData Aujourd'hui</h1>
+          <p class="register-subtitle">Transformez les fuites en insights. Commencez avec l'intelligence de menace avancée et le monitoring.</p>
+          
+          <div class="register-features">
+            <div class="register-feature">
+              <div class="feature-icon">🔒</div>
+              <div class="feature-content">
+                <h3>Sécurité avancée</h3>
+                <p>Détection de menace de grade entreprise</p>
+              </div>
+            </div>
+            <div class="register-feature">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-content">
+                <h3>Intelligence en temps réel</h3>
+                <p>Recevez les notifications de fuites instantanément</p>
+              </div>
+            </div>
+            <div class="register-feature">
+              <div class="feature-icon">✓</div>
+              <div class="feature-content">
+                <h3>Intégration facile</h3>
+                <p>Configuration en quelques minutes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: Registration Form -->
+        <div class="register-right">
+          <div class="register-card">
+            <div class="register-header">
+              <h2>Créer un compte</h2>
+              <span class="register-badge">Recommandé</span>
+            </div>
+            <p class="register-subtitle-form">Rejoignez des milliers de professionnels de la sécurité utilisant SeekData</p>
+
+            <!-- Quick Registration -->
+            <div class="quick-registration">
+              <div class="qr-title">Inscription rapide</div>
+              <p class="qr-desc">Inscription en un clic sans vérification d'email</p>
+              
+              <div class="oauth-buttons">
+                <button class="oauth-btn github" onclick="alert('GitHub OAuth - Simulation')">
+                  <span>GitHub</span>
+                </button>
+                <button class="oauth-btn google" onclick="alert('Google OAuth - Simulation')">
+                  <span>Google</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="divider">Ou s'inscrire manuellement</div>
+
+            <!-- Manual Registration Form -->
+            <form id="register-form-main" class="register-form" autocomplete="off">
+              <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input id="username" name="username" type="text" placeholder="your_handle" required>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <div class="password-input-wrapper">
+                  <input id="password" name="password" type="password" placeholder="••••••••" required minlength="8">
+                  <button type="button" class="toggle-password" onclick="togglePassword('password')">👁</button>
+                </div>
+                <div class="password-strength">
+                  <small id="strength-text">Très faible</small>
+                  <div class="strength-bar">
+                    <div class="strength-fill" id="strength-bar"></div>
+                  </div>
+                  <ul class="strength-hints">
+                    <li id="hint-length">✗ Au moins 8 caractères</li>
+                    <li id="hint-lower">✗ Contient une minuscule</li>
+                    <li id="hint-upper">✗ Contient une majuscule</li>
+                    <li id="hint-number">✗ Contient un chiffre</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm-password">Confirmer le mot de passe</label>
+                <div class="password-input-wrapper">
+                  <input id="confirm-password" name="confirm_password" type="password" placeholder="••••••••" required>
+                  <button type="button" class="toggle-password" onclick="togglePassword('confirm-password')">👁</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-register">Créer un compte →</button>
+              <div class="form-msg"></div>
+            </form>
+
+            <p class="signin-link">Vous avez déjà un compte ? <a href="index.html#account-login">Se connecter ici</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>SeekData</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem">Plateforme OSINT et cybersécurité</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding-top:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">© SeekData 2025 — Prototype OSINT & cybersécurité</div>
+  </footer>
+
+  <script>
+    // ===== LOG SYSTEM =====
+    function addLog(event, details = {}) {
+      const log = {
+        timestamp: new Date().toISOString(),
+        event,
+        ...details
+      };
+      const logs = JSON.parse(localStorage.getItem('SeekData_logs') || '[]');
+      logs.push(log);
+      // Keep only last 500 logs
+      if (logs.length > 500) logs.shift();
+      localStorage.setItem('SeekData_logs', JSON.stringify(logs));
+      console.log('[LOG]', log);
+    }
+
+    function togglePassword(id){
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    const pwInput = document.getElementById('password');
+    if(pwInput){
+      pwInput.addEventListener('input', ()=>{
+        const pw = pwInput.value;
+        let strength = 0;
+        const hints = {
+          length: pw.length >= 8,
+          lower: /[a-z]/.test(pw),
+          upper: /[A-Z]/.test(pw),
+          number: /[0-9]/.test(pw)
+        };
+        Object.values(hints).forEach(v => strength += v ? 25 : 0);
+        
+        document.getElementById('strength-bar').style.width = strength + '%';
+        const texts = ['Très faible', 'Faible', 'Moyen', 'Fort', 'Très fort'];
+        document.getElementById('strength-text').textContent = texts[Math.floor(strength/25)];
+        
+        document.getElementById('hint-length').textContent = (hints.length ? '✓' : '✗') + ' Au moins 8 caractères';
+        document.getElementById('hint-lower').textContent = (hints.lower ? '✓' : '✗') + ' Contient une minuscule';
+        document.getElementById('hint-upper').textContent = (hints.upper ? '✓' : '✗') + ' Contient une majuscule';
+        document.getElementById('hint-number').textContent = (hints.number ? '✓' : '✗') + ' Contient un chiffre';
+      });
+    }
+
+    const regForm = document.getElementById('register-form-main');
+    if(regForm){
+      regForm.addEventListener('submit', async e=>{
+        e.preventDefault();
+        const username = regForm.querySelector('input[name="username"]')?.value.trim() || '';
+        const email = regForm.querySelector('input[name="email"]')?.value.trim().toLowerCase() || '';
+        const password = regForm.querySelector('input[name="password"]')?.value || '';
+        const confirmPw = regForm.querySelector('input[name="confirm_password"]')?.value || '';
+        const msg = regForm.querySelector('.form-msg');
+        if(!msg) return;
+        msg.textContent = '';
+
+        if(!username || !email || !password || !confirmPw){
+          msg.textContent = 'Veuillez remplir tous les champs.';
+          msg.className = 'form-msg error';
+          return;
+        }
+        if(password !== confirmPw){
+          msg.textContent = 'Les mots de passe ne correspondent pas.';
+          msg.className = 'form-msg error';
+          return;
+        }
+        
+        try{
+          // Static registration: use localStorage only
+          const hash = await sha256(password);
+          const now = new Date().toISOString();
+          const users = JSON.parse(localStorage.getItem('SeekData_users') || '{}');
+          
+          if(users[email]){
+            msg.textContent = 'Un compte existe déjà pour cet email.';
+            msg.className = 'form-msg error';
+            return;
+          }
+          
+          users[email] = {email, username, pw_hash:hash, created_at:now, logins:[]};
+          localStorage.setItem('SeekData_users', JSON.stringify(users));
+          
+          // Log account creation with IP and timestamp
+          const ip = await fetchIP();
+          addLog('user_registered', { email, username, ip, created_at: now });
+          
+          msg.textContent = 'Compte créé avec succès ! Redirection...';
+          msg.className = 'form-msg success';
+          setTimeout(() => window.location.href = 'index.html', 2000);
+        }catch(err){
+          console.error('Registration error:', err);
+          addLog('registration_error', { email, error: err.message });
+          msg.textContent = 'Erreur: ' + err.message;
+          msg.className = 'form-msg error';
+        }
+      });
+    }
+
+    async function fetchIP(){
+      try{
+        const res = await fetch('https://api.ipify.org?format=json');
+        if(!res.ok) throw new Error();
+        const j = await res.json();
+        return j.ip || '0.0.0.0';
+      }catch(e){
+        return '0.0.0.0';
+      }
+    }
+
+    async function sha256(message){
+      const msgUint8 = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+    }
+  </script>
+</body>
+</html>

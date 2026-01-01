@@ -1,0 +1,24 @@
+# Backend directories - not deployed to Netlify
+server/
+admin/
+
+# Node modules (if backend is run locally)
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

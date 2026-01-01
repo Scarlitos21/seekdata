@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Connexion — SeekData</title>
+  <link rel="stylesheet" href="seeknow.css?v=1">
+  <style>
+    .login-page {
+      min-height: calc(100vh - 140px);
+      display: grid;
+      place-items: center;
+      padding: 3rem 1rem;
+    }
+
+    .login-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1200px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .login-left h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 1.2rem;
+      background: linear-gradient(135deg, #fff, rgba(255,255,255,0.7));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .login-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      margin: 0 0 2rem;
+      line-height: 1.6;
+    }
+
+    .login-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .login-feature {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s;
+    }
+
+    .login-feature:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .feature-content h3 {
+      margin: 0 0 0.3rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .feature-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .login-card {
+      background: rgba(255,255,255,0.03);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .login-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .login-badge {
+      display: inline-block;
+      background: rgba(100,255,150,0.15);
+      color: #64ff96;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      border: 1px solid rgba(100,255,150,0.3);
+    }
+
+    .login-subtitle-form {
+      margin: 0.8rem 0 2rem;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .form-group label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .form-group input {
+      padding: 0.9rem 1.1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .form-group input:hover {
+      border-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: rgba(100,255,150,0.5);
+      background: rgba(100,255,150,0.05);
+      box-shadow: 0 0 0 3px rgba(100,255,150,0.1);
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-input-wrapper input {
+      width: 100%;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+
+    .toggle-password:hover {
+      color: rgba(255,255,255,0.9);
+    }
+
+    .form-msg {
+      min-height: 1.2rem;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      padding: 0.6rem;
+      text-align: center;
+      display: none;
+    }
+
+    .form-msg.show {
+      display: block;
+    }
+
+    .form-msg.success {
+      background: rgba(100,255,150,0.1);
+      color: #64ff96;
+      border: 1px solid rgba(100,255,150,0.3);
+    }
+
+    .form-msg.error {
+      background: rgba(255,100,100,0.1);
+      color: #ff6464;
+      border: 1px solid rgba(255,100,100,0.3);
+    }
+
+    .btn-login {
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #64ff96, #50e084);
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(100,255,150,0.3);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .signup-link a {
+      color: #64ff96;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .signup-link a:hover {
+      color: #fff;
+    }
+
+    .forgot-password {
+      text-align: right;
+      font-size: 0.85rem;
+      margin-top: -0.8rem;
+    }
+
+    .forgot-password a {
+      color: rgba(100,255,150,0.8);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .forgot-password a:hover {
+      color: #64ff96;
+    }
+
+    @media (max-width: 1024px) {
+      .login-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .login-left {
+        display: none;
+      }
+
+      .login-card {
+        max-width: 450px;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid-mask" aria-hidden="true"></div>
+
+  <main>
+    <section class="login-page">
+      <div class="login-container">
+        <!-- LEFT SIDE: Features -->
+        <div class="login-left">
+          <h1>Accédez à votre compte</h1>
+          <p class="login-subtitle">Connectez-vous pour continuer votre investigation OSINT et surveiller vos données sensibles.</p>
+          
+          <div class="login-features">
+            <div class="login-feature">
+              <div class="feature-icon">🔐</div>
+              <div class="feature-content">
+                <h3>Connexion sécurisée</h3>
+                <p>Vos données protégées par chiffrement AES-256</p>
+              </div>
+            </div>
+            <div class="login-feature">
+              <div class="feature-icon">⚡</div>
+              <div class="feature-content">
+                <h3>Accès instant</h3>
+                <p>Reprendre vos recherches exactement où vous les aviez laissées</p>
+              </div>
+            </div>
+            <div class="login-feature">
+              <div class="feature-icon">📊</div>
+              <div class="feature-content">
+                <h3>Historique conservé</h3>
+                <p>Tous vos résultats et alertes synchronisés</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: Login Form -->
+        <div class="login-right">
+          <div class="login-card">
+            <div class="login-header">
+              <h2>Se connecter</h2>
+              <span class="login-badge">Sécurisé</span>
+            </div>
+            <p class="login-subtitle-form">Entrez vos identifiants pour accéder à votre compte SeekData</p>
+
+            <form id="login-form" class="login-form" autocomplete="off">
+              <div class="form-group">
+                <label for="login-email">Email</label>
+                <input id="login-email" name="email" type="email" placeholder="you@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="login-password">Mot de passe</label>
+                <div class="password-input-wrapper">
+                  <input id="login-password" name="password" type="password" placeholder="••••••••" required>
+                  <button type="button" class="toggle-password" onclick="togglePassword('login-password')">👁</button>
+                </div>
+              </div>
+
+              <div class="forgot-password">
+                <a href="#">Mot de passe oublié ?</a>
+              </div>
+
+              <button type="submit" class="btn-login">Se connecter →</button>
+              <div class="form-msg"></div>
+            </form>
+
+            <p class="signup-link">Vous n'avez pas de compte ? <a href="register.html">S'inscrire maintenant</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>SeekData</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem">Plateforme OSINT et cybersécurité</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Assistance</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">CGU</a></li>
+          <li><a href="#">Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 SeekData. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script>
+    function togglePassword(id) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const msg = document.querySelector('.form-msg');
+
+      if (!email || !password) {
+        msg.textContent = 'Veuillez remplir tous les champs';
+        msg.className = 'form-msg show error';
+        return;
+      }
+
+      try {
+        msg.textContent = 'Connexion en cours...';
+        msg.className = 'form-msg show';
+
+        // Static login: use localStorage fallback only
+        const hash = await sha256(password);
+        const users = JSON.parse(localStorage.getItem('SeekData_users') || '{}');
+        
+        if (!users[email] || users[email].pw_hash !== hash) {
+          msg.textContent = 'Email ou mot de passe incorrect';
+          msg.className = 'form-msg show error';
+          return;
+        }
+
+        // Create a mock token and save it
+        const mockToken = 'Bearer_' + btoa(email + ':' + Date.now());
+        sessionStorage.setItem('seekdata_token', mockToken);
+        sessionStorage.setItem('seekdata_email', email);
+
+        // Success
+        msg.textContent = 'Connexion réussie, redirection...';
+        msg.className = 'form-msg show success';
+
+        // Redirect to index
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+
+      } catch (err) {
+        console.error('Login error:', err);
+        msg.textContent = 'Erreur: ' + err.message;
+        msg.className = 'form-msg show error';
+      }
+    });
+  </script>
+</body>
+</html>

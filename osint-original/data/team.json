@@ -1,0 +1,38 @@
+[
+  {
+    "id": "777",
+    "pseudo": "Scarlet",
+    "discord_id": "1455743481971736700",
+    "title": "Founder",
+    "avatar_url": "https://i.pinimg.com/736x/3a/e9/0d/3ae90d50e668df5d07e5c032445c83b0.jpg",
+    "banner_url": "https://i.pinimg.com/1200x/43/ff/f4/43fff4d92658306161c5d09319380c70.jpg",
+    "badges": [
+      {
+        "text": "Créateur",
+        "icon": "assets/crown_badge.png"
+      },
+      {
+        "text": "Developer",
+        "icon": "assets/dev.png"
+      }
+    ]
+  },
+  {
+    "id": "444",
+    "pseudo": "HatSu",
+    "discord_id": "1455743481971736700",
+    "title": "Administrator & Co-Founder",
+    "avatar_url": "https://i.postimg.cc/9ML2hDgy/e605d3e537e78ec8ffe17008c130b409.jpg",
+    "banner_url": "https://i.pinimg.com/736x/47/fd/02/47fd02609a30dd677f150b437ef82b2b.jpg",
+    "badges": [
+      {
+        "text": "Admin",
+        "icon": "assets/admin_badge.png"
+      },
+      {
+        "text": "Co-Founder",
+        "icon": "assets/crown_badge.png"
+      }
+    ]
+  }
+]

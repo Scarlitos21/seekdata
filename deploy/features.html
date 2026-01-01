@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fonctionnalités — SeekData</title>
+   <link rel="stylesheet" href="seeknow.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" style="min-height:50vh">
+      <div class="container hero-inner">
+        <h1 class="hero-title">Fonctionnalités avancées</h1>
+        <p class="hero-sub">Outils complets pour l'analyse OSINT, la détection de fuites et la veille en cybersécurité.</p>
+      </div>
+    </section>
+
+    <!-- FEATURES GRID -->
+    <section class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Services disponibles</h2>
+          <p>Explorez notre arsenal complet d'outils de sécurité et d'analyse</p>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <h3>Recherche de fuites</h3>
+            <p>Vérifiez si votre email, nom d'utilisateur ou données personnelles figurent dans les bases de données de fuites publiques connues.</p>
+          </div>
+          <div class="card">
+            <h3>Analyse OSINT multi-sources</h3>
+            <p>Collectez et corréllez les informations à partir de multiples sources publiques pour construire une image complète.</p>
+          </div>
+          <div class="card">
+            <h3>Vérification d'email</h3>
+            <p>Validez les adresses email et détectez les comptes compromis avec historique de fuites.</p>
+          </div>
+          <div class="card">
+            <h3>Analyse d'IP</h3>
+            <p>Analyser la réputation, la géolocalisation, les risques et l'historique associés à une adresse IP.</p>
+          </div>
+          <div class="card">
+            <h3>Recherche d'identifiant</h3>
+            <p>Trouvez des comptes par username, Discord ID, ou autres identifiants publics sur les réseaux et forums.</p>
+          </div>
+          <div class="card">
+            <h3>Surveillance de domaine</h3>
+            <p>Surveillez les domaines pour les expositions, les certificats SSL et les configurations DNS.</p>
+          </div>
+          <div class="card">
+            <h3>Historique sécurisé</h3>
+            <p>Conservez un historique complet de toutes vos recherches et analyses, accessible uniquement à vous.</p>
+          </div>
+          <div class="card">
+            <h3>Alertes en temps réel</h3>
+            <p>Recevez des notifications instantanées si vos données apparaissent dans de nouvelles fuites.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESS CONTROL -->
+    <section class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Contrôle d'accès par plan</h2>
+          <p>Les recherches avancées nécessitent un compte et un plan actif</p>
+        </div>
+        <div class="cards-grid">
+          <div class="card">
+            <h3>Plan Free</h3>
+            <p>Parfait pour tester : 5 recherches par jour, accès à la base de fuites publiques, pas de support premium.</p>
+          </div>
+          <div class="card">
+            <h3>Plan Premium</h3>
+            <p>Recherches illimitées, accès complet à tous les services, monitoring en temps réel, support prioritaire.</p>
+          </div>
+          <div class="card">
+            <h3>Plan Entreprise</h3>
+            <p>Solutions sur mesure, API d'intégration, support dédié, rapports personnalisés, audit complet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>SeekData</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem">OSINT et cybersécurité</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding-top:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">© SeekData 2025 — Prototype OSINT & cybersécurité</div>
+  </footer>
+
+  <script src="assets/js/seeknow.js"></script>
+  <script>
+    function scrollToSection(selector){
+      const el = document.querySelector(selector);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+
+        if(selector === '#account-register'){
+          window.location.href = 'register.html';
+        } else {
+          window.location.href = 'seeknow.html' + selector;
+        }
+    }
+  </script>
+</body>
+</html>

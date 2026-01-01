@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard - SeekData</title>
+  <link rel="stylesheet" href="seeknow.css?v=1">
+  <link rel="stylesheet" href="dashboard.css?v=1">
+  <style>
+    .dashboard-container { display: none; }
+    .dashboard-container.active { display: grid; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .nav-item { cursor: pointer; }
+    .nav-item.active { background: rgba(255, 255, 255, 0.1); border-left: 3px solid #fff; }
+    .logout-btn { margin-top: auto; color: #ff6b6b; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+    th { background: #1a1a1a; font-weight: bold; }
+    tr:hover { background: #252525; }
+    .severity-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .severity-badge.info { background: #0066cc; color: #fff; }
+    .severity-badge.warning { background: #ff9800; color: #fff; }
+    .severity-badge.critical { background: #ff3333; color: #fff; }
+    .stat-card { background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 3px solid #666; }
+    .stat-card.high { border-left-color: #4ade80; }
+    .stat-label { color: #999; font-size: 14px; }
+    .stat-value { font-size: 32px; font-weight: bold; margin: 10px 0; }
+    .stat-description { color: #666; font-size: 12px; }
+    .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .btn-primary { background: #0066cc; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .btn-primary:hover { background: #0052a3; }
+  </style>
+</head>
+<body class="page-light">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes</a></li>
+        </ul>
+      </nav>
+      <div class="nav-right nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid-mask" aria-hidden="true"></div>
+
+  <div class="dashboard-container active">
+    <!-- SIDEBAR -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand">
+          <img src="image2.png" alt="logo" class="brand-thumb">
+        </a>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="overview">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Aperçu</span>
+        </button>
+        <button class="nav-item" data-tab="history">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Historique</span>
+        </button>
+        <button class="nav-item" data-tab="security">
+          <span class="nav-icon">🔐</span>
+          <span class="nav-label">Sécurité</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Paramètres</span>
+        </button>
+        <hr class="sidebar-divider">
+        <button class="nav-item logout-btn" id="logout-btn">
+          <span class="nav-icon">🚪</span>
+          <span class="nav-label">Déconnexion</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+      <!-- HEADER -->
+      <header class="dashboard-header">
+        <div class="header-left">
+          <h1 class="page-title">Dashboard</h1>
+        </div>
+        <div class="header-right">
+          <div class="user-info">
+            <div class="user-name" id="user-name">Utilisateur</div>
+            <div class="user-plan" id="plan-status">Plan: FREE</div>
+          </div>
+          <div class="user-avatar" id="user-avatar">U</div>
+        </div>
+      </header>
+
+      <!-- ONGLETS -->
+      <div class="dashboard-content">
+        <!-- APERÇU -->
+        <section class="tab-content active" id="tab-overview">
+          <h2>Aperçu</h2>
+          <div class="overview-grid">
+            <div class="stat-card high">
+              <div class="stat-label">Recherches effectuées</div>
+              <div class="stat-value" id="total-searches">0</div>
+              <div class="stat-description">Au total</div>
+            </div>
+            <div class="stat-card high">
+              <div class="stat-label">Aujourd'hui</div>
+              <div class="stat-value" id="searches-today">0</div>
+              <div class="stat-description">Requêtes</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Dernière recherche</div>
+              <div class="stat-value" style="font-size: 16px;" id="last-search-time">—</div>
+              <div class="stat-description">Date et heure</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Statut du compte</div>
+              <div class="stat-value" style="font-size: 18px; color: #4ade80;" id="account-status">Actif</div>
+              <div class="stat-description">Toutes les fonctionnalités</div>
+            </div>
+          </div>
+
+          <h3 style="margin-top: 30px;">Plan et Quotas</h3>
+          <div class="stat-card">
+            <div class="stat-label">Plan actuel</div>
+            <div class="stat-value" id="current-plan">FREE</div>
+            <div class="stat-description" id="plan-info">Accès limité - 5 requêtes par jour</div>
+          </div>
+
+          <div class="stat-card" style="margin-top: 15px;">
+            <div class="stat-label">Requêtes restantes</div>
+            <div class="stat-value" id="remaining-searches">5</div>
+            <div class="stat-description">Pour aujourd'hui</div>
+          </div>
+
+          <h3 style="margin-top: 30px;">Dernière connexion</h3>
+          <div class="stat-card">
+            <div class="stat-value" style="font-size: 18px;" id="last-login-time">—</div>
+          </div>
+        </section>
+
+        <!-- HISTORIQUE -->
+        <section class="tab-content" id="tab-history">
+          <h2>Historique de recherches</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Requête</th>
+                <th>Résultats</th>
+                <th>Date / Heure</th>
+              </tr>
+            </thead>
+            <tbody id="search-history-tbody">
+              <tr><td colspan="4" style="text-align:center;color:#666;">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- SÉCURITÉ -->
+        <section class="tab-content" id="tab-security">
+          <h2>Sécurité du compte</h2>
+          <h3>Connexions récentes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Adresse IP</th>
+                <th>Date / Heure</th>
+              </tr>
+            </thead>
+            <tbody id="login-history-tbody">
+              <tr><td colspan="3" style="text-align:center;color:#666;">Chargement...</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top: 30px;">Actions de sécurité</h3>
+          <div style="margin-top: 15px;">
+            <button class="btn-primary" onclick="disconnectAllSessions()" style="background: #ff6b6b;">
+              Déconnecter toutes les sessions
+            </button>
+          </div>
+        </section>
+
+        <!-- PARAMÈTRES -->
+        <section class="tab-content" id="tab-settings">
+          <h2>Paramètres</h2>
+          <div class="stat-card">
+            <h3>Informations du compte</h3>
+            <p><strong>Email :</strong> <span id="current-user">—</span></p>
+            <p><strong>Créé le :</strong> <span id="created-date">—</span></p>
+            <p><strong>Total de connexions :</strong> <span id="total-logins">0</span></p>
+          </div>
+
+          <div class="stat-card" style="margin-top: 15px;">
+            <h3>Notifications</h3>
+            <label style="display:flex; align-items:center; gap:10px; margin:10px 0;">
+              <input type="checkbox" checked>
+              Notifications par email
+            </label>
+            <label style="display:flex; align-items:center; gap:10px; margin:10px 0;">
+              <input type="checkbox" checked>
+              Alertes de sécurité
+            </label>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="dashboard-user.js"></script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeekData - Maintenance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #0a0a0a;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100px 100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse 600px 600px at 5% 5%, rgba(255,255,255,0.03) 0%, transparent 70%),
+        radial-gradient(ellipse 600px 600px at 95% 95%, rgba(255,255,255,0.02) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .content {
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .status {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: #ff6666;
+      border-radius: 50%;
+      margin-right: 12px;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .message {
+      font-size: 18px;
+      color: #cccccc;
+      margin-bottom: 40px;
+      line-height: 1.8;
+    }
+
+    .message strong {
+      color: #ffffff;
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .submessage {
+      font-size: 14px;
+      color: #888888;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid #333333;
+    }
+
+    .timer {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      font-family: 'Courier New', monospace;
+      margin: 30px 0;
+      letter-spacing: 2px;
+    }
+
+    .details {
+      margin-top: 40px;
+      padding: 20px;
+      border: 1px solid #333333;
+      border-radius: 2px;
+      background: rgba(10, 10, 10, 0.8);
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: #888888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 11px;
+    }
+
+    .detail-value {
+      font-family: 'Courier New', monospace;
+      color: #ffffff;
+    }
+
+    .btn-container {
+      margin-top: 40px;
+    }
+
+    .btn-refresh {
+      padding: 12px 30px;
+      border: 1px solid #333333;
+      border-radius: 2px;
+      background: #1a1a1a;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-refresh:hover {
+      border-color: #ffffff;
+      background: #2a2a2a;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 32px;
+        margin-bottom: 20px;
+      }
+
+      .status {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+
+      .message {
+        font-size: 14px;
+        margin-bottom: 30px;
+      }
+
+      .timer {
+        font-size: 24px;
+        margin: 20px 0;
+      }
+
+      .details {
+        margin-top: 20px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <div class="logo">SEEKDATA</div>
+      
+      <div class="status">
+        <span class="status-dot"></span>
+        En Maintenance
+      </div>
+
+      <div class="message">
+        <strong id="maintenance-message">SeekData est actuellement en maintenance.</strong>
+        Nous améliorons notre plateforme pour vous offrir un service optimal.
+        <br><br>
+        Nous serons de retour très bientôt.
+      </div>
+
+      <div id="timer-section">
+        <div class="submessage">
+          Durée estimée:
+          <div class="timer" id="countdown">--:--:--</div>
+        </div>
+      </div>
+
+      <div class="details" id="details">
+        <div class="detail-row">
+          <span class="detail-label">Mode Maintenance</span>
+          <span class="detail-value">ACTIF</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Début</span>
+          <span class="detail-value" id="start-time">Chargement...</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Statut API</span>
+          <span class="detail-value">SUSPENDU</span>
+        </div>
+      </div>
+
+      <div class="submessage">
+        Pour toute question, contactez <strong>support@seekdata.io</strong>
+      </div>
+
+      <div class="btn-container">
+        <button class="btn-refresh" onclick="location.reload()">↻ Vérifier Disponibilité</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Load maintenance details
+    async function loadDetails() {
+      try {
+        const res = await fetch('/api/admin/system', {
+          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('admin_token')}` }
+        });
+        
+        if (res.ok) {
+          const system = await res.json();
+          
+          if (system.maintenance_message) {
+            document.getElementById('maintenance-message').textContent = system.maintenance_message;
+          }
+          
+          if (system.maintenance_start) {
+            const startTime = new Date(system.maintenance_start);
+            document.getElementById('start-time').textContent = startTime.toLocaleString('fr-FR');
+          }
+          
+          if (system.maintenance_end) {
+            startCountdown(new Date(system.maintenance_end));
+          }
+        }
+      } catch (err) {
+        console.log('Details not available');
+      }
+    }
+
+    function startCountdown(endDate) {
+      const timerElement = document.getElementById('countdown');
+      
+      function updateTimer() {
+        const now = new Date();
+        const diff = endDate - now;
+        
+        if (diff <= 0) {
+          window.location.href = '/';
+          return;
+        }
+        
+        const hours = Math.floor(diff / 3600000);
+        const minutes = Math.floor((diff % 3600000) / 60000);
+        const seconds = Math.floor((diff % 60000) / 1000);
+        
+        timerElement.textContent = 
+          String(hours).padStart(2, '0') + ':' +
+          String(minutes).padStart(2, '0') + ':' +
+          String(seconds).padStart(2, '0');
+      }
+      
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    // Load on page load
+    window.addEventListener('load', loadDetails);
+    
+    // Refresh every 30 seconds
+      // Check maintenance status every 10 seconds
+      setInterval(async () => {
+        try {
+          const res = await fetch('/api/admin/system');
+          if (res.ok) {
+            const system = await res.json();
+            if (!system.maintenance_mode) {
+              window.location.href = '/';
+            }
+          }
+        } catch (err) {
+          // Silently fail
+        }
+      }, 10000);
+  </script>
+</body>
+</html>

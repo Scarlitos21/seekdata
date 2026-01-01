@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SeekData — Plateforme OSINT et cybersécurité</title>
+  <link rel="stylesheet" href="seeknow.css">
+  <style>
+    /* ===== CUSTOM DROPDOWN AVEC ANIMATION ===== */
+    .dropdown-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .dropdown-button {
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .dropdown-button:hover {
+      background: rgba(255,255,255,0.03);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .dropdown-button::after {
+      content: '▼';
+      font-size: 0.6rem;
+      margin-left: 0.3rem;
+      transition: transform 0.3s;
+    }
+
+    .dropdown-wrapper.open .dropdown-button::after {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: fixed; /* render outside normal flow to avoid clipping */
+      top: 0; left: 0; /* will be positioned by JS */
+      background: rgba(10, 10, 10, 0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      margin-top: 0.3rem;
+      min-width: 200px;
+      z-index: 10000;
+      max-height: 0;
+      overflow: auto; /* allow internal scrolling when opened */
+      transition: max-height 0.3s ease-out, transform 0.12s ease;
+      transform-origin: top left;
+    }
+
+    .dropdown-menu.open {
+      max-height: 400px;
+      transform: translateY(6px);
+    }
+
+    .dropdown-option {
+      padding: 0.65rem 1rem;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      transition: all 0.2s;
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      opacity: 0;
+      animation: slideDownOption 0.4s ease-out forwards;
+    }
+
+    .dropdown-option:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes slideDownOption {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .dropdown-option:nth-child(1) { animation-delay: 0ms; }
+    .dropdown-option:nth-child(2) { animation-delay: 40ms; }
+    .dropdown-option:nth-child(3) { animation-delay: 80ms; }
+    .dropdown-option:nth-child(4) { animation-delay: 120ms; }
+    .dropdown-option:nth-child(5) { animation-delay: 160ms; }
+    .dropdown-option:nth-child(6) { animation-delay: 200ms; }
+    .dropdown-option:nth-child(7) { animation-delay: 240ms; }
+    .dropdown-option:nth-child(8) { animation-delay: 280ms; }
+    .dropdown-option:nth-child(9) { animation-delay: 320ms; }
+    .dropdown-option:nth-child(10) { animation-delay: 360ms; }
+
+    .dropdown-option:hover {
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+    }
+
+    /* Masquer le select original */
+    #search-provider {
+      display: none;
+    }
+
+    /* Agrandir la barre de recherche */
+    .search-form {
+      max-width: 900px !important;
+      padding: 0.8rem !important;
+      gap: 0.8rem !important;
+    }
+
+    .search-form input {
+      padding: 1rem 1.2rem !important;
+      font-size: 1.1rem !important;
+    }
+
+    .search-form button {
+      padding: 0.9rem 1.8rem !important;
+      font-size: 1rem !important;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
+      <nav class="nav">
+        <ul class="nav-menu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-auth">
+        <a class="btn btn-auth" href="login.html">Connexion</a>
+        <a class="btn btn-auth" href="register.html">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid-mask" aria-hidden="true"></div>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="scan-lines" aria-hidden="true"></div>
+        <div class="hero-badge">PLATEFORME DE CYBERSÉCURITÉ DE CONFIANCE</div>
+        
+        <div class="eye-wrap">
+          <img src="image.png" alt="logo" class="eye-img">
+        </div>
+
+        <h2 class="hero-lead">Discover the power of</h2>
+        <h1 class="hero-title"><span class="rotating" id="rotating-text">Data Breach Detection</span></h1>
+        <p class="hero-sub">Détectez les violations de données, les fuites et les menaces rapidement et en toute confidentialité. SeekData aide les individus et les organisations à protéger leurs informations.</p>
+
+        <form id="search-form" class="search-form" autocomplete="off">
+          <div class="dropdown-wrapper" id="dropdown-wrapper">
+            <button type="button" class="dropdown-button">Choisir un provider...</button>
+            <div class="dropdown-menu" id="dropdown-menu">
+              <div class="dropdown-option" data-value="">Choisir un provider...</div>
+              <div class="dropdown-option" data-value="leakcheck-email">LeakCheck (Email)</div>
+              <div class="dropdown-option" data-value="ipinfo">IP Info</div>
+              <div class="dropdown-option" data-value="phoneinfo">Phone Info</div>
+              <div class="dropdown-option" data-value="snusbase">Snusbase (Premium)</div>
+              <div class="dropdown-option" data-value="redline">Redlie (Premium)</div>
+              <div class="dropdown-option" data-value="breachvip">BreachVIP (Premium)</div>
+              <div class="dropdown-option" data-value="leakcheck">LeakCheck (Premium)</div>
+              <div class="dropdown-option" data-value="roblox">Roblox</div>
+              <div class="dropdown-option" data-value="steam">Steam</div>
+            </div>
+          </div>
+          <select id="search-provider" class="search-provider">
+            <option value="">Choisir un provider...</option>
+            <option value="leakcheck-email">LeakCheck (Email)</option>
+            <option value="ipinfo">IP Info</option>
+            <option value="phoneinfo">Phone Info</option>
+            <option value="snusbase">Snusbase (Premium)</option>
+            <option value="redline">redline (Premium)</option>
+            <option value="breachvip">BreachVIP (Premium)</option>
+            <option value="leakcheck">LeakCheck (Premium)</option>
+            <option value="roblox">Roblox</option>
+            <option value="steam">Steam</option>
+          </select>
+          <input id="search-input" type="search" placeholder="Connectez-vous pour rechercher…" aria-label="Recherche">
+          <button type="submit">Rechercher →</button>
+        </form>
+
+        <div class="search-tags">
+          <span>Recherches populaires :</span>
+          <button class="search-tag" type="button">Email</button>
+          <button class="search-tag" type="button">Username</button>
+          <button class="search-tag" type="button">Discord ID</button>
+          <button class="search-tag" type="button">IP Address</button>
+          <button class="search-tag" type="button">Domain</button>
+        </div>
+
+        <div id="search-results" class="cards-grid" aria-live="polite"></div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="num">15</div>
+            <div class="label">Sources de données</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">2To+</div>
+            <div class="label">de bases de données</div>
+          </div>
+          <div class="stat-item">
+            <div class="num">92.5%</div>
+            <div class="label">Uptime</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES PREVIEW -->
+    <section id="features" class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Fonctionnalités principales</h2>
+          <p>Outils d'analyse avancés pour la cybersécurité et l'OSINT</p>
+        </div>
+        <div class="features-list">
+          <div class="card">
+            <h3>Recherche de fuites</h3>
+            <p>Détectez rapidement si vos données figurent dans les bases de fuites publiques.</p>
+          </div>
+          <div class="card">
+            <h3>Analyse OSINT</h3>
+            <p>Collectez et corréllez les données publiques depuis des sources multi-domaines.</p>
+          </div>
+          <div class="card">
+            <h3>Monitoring IP</h3>
+            <p>Analysez la réputation, la localisation et les risques associés à une adresse IP.</p>
+          </div>
+          <div class="card">
+            <h3>Historique utilisateur</h3>
+            <p>Conservez un historique sécurisé de toutes vos recherches et analyses.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="account" class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Choisissez votre plan</h2>
+          <p>De l'essai gratuit à la solution d'entreprise complète</p>
+        </div>
+        <div class="pricing-cards">
+          <div class="pricing-card">
+            <h3>Free</h3>
+            <div class="price">0€</div>
+            <div class="price-period">pour commencer</div>
+            <ul>
+              <li>✓ 5 recherches par jour</li>
+              <li>✓ Accès base de fuites publiques</li>
+              <li>✓ Vérification d'email simple</li>
+              <li>✗ Pas de monitoring temps réel</li>
+              <li>✗ Pas de support prioritaire</li>
+            </ul>
+            <button class="btn solid" onclick="window.location.href='register.html'">Créer un compte</button>
+          </div>
+
+          <div class="pricing-card">
+            <h3>Starter</h3>
+            <div class="price">19€</div>
+            <div class="price-period">par mois</div>
+            <ul>
+              <li>✓ 500 recherches par mois</li>
+              <li>✓ Accès OSINT multi-sources</li>
+              <li>✓ Analyse d'IP avancée</li>
+              <li>✓ Monitoring temps réel</li>
+              <li>✓ Support email prioritaire</li>
+            </ul>
+            <button class="btn solid" onclick="window.location.href='######## PAYMENT GATEWAY URL ########'">S'abonner</button>
+          </div>
+
+          <div class="pricing-card featured">
+            <div class="badge-best">Best seller</div>
+            <h3>Pro</h3>
+            <div class="price">49.99€</div>
+            <div class="price-period">par mois</div>
+            <ul>
+              <li>✓ Recherches illimitées</li>
+              <li>✓ Accès complet OSINT multi-sources</li>
+              <li>✓ Analyse d'IP avancée</li>
+              <li>✓ Monitoring temps réel</li>
+              <li>✓ Support par email prioritaire</li>
+            </ul>
+            <button class="btn solid" onclick="window.location.href='######## PAYMENT GATEWAY URL ########'">S'abonner</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN SECTION (below pricing) -->
+    <section id="login-section" class="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Vous avez déjà un compte ?</h2>
+          <p>Connectez-vous pour accéder à votre tableau de bord</p>
+        </div>
+        <div class="account-grid">
+          <form id="login-form" class="account-form">
+            <h3 id="account-login">Connexion</h3>
+            <div class="form-group">
+              <label for="login-email">Email</label>
+              <input id="login-email" name="email" type="email" required>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Mot de passe</label>
+              <input id="login-password" name="password" type="password" required>
+            </div>
+            <button type="submit" class="form-submit">Se connecter</button>
+            <div class="form-msg"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <h4>SeekData</h4>
+        <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.9rem">Plateforme OSINT et cybersécurité — observation et analyse de données publiques.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <ul>
+          <li><a href="features.html">Fonctionnalités</a></li>
+          <li><a href="pricing.html">Tarifs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Entreprise</h4>
+        <ul>
+          <li><a href="notes.html">Notes de patch</a></li>
+          <li><a href="team.html">Équipe</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="#">Confidentialité</a></li>
+          <li><a href="#">Conditions</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding-top:1rem;text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">© SeekData 2025 — Prototype OSINT & cybersécurité</div>
+  </footer>
+
+  <script src="assets/js/seeknow.js"></script>
+  <script>
+    // Custom dropdown functionality
+    const dropdownWrapper = document.getElementById('dropdown-wrapper');
+    const dropdownButton = dropdownWrapper.querySelector('.dropdown-button');
+    const dropdownOptions = dropdownWrapper.querySelectorAll('.dropdown-option');
+    const searchProvider = document.getElementById('search-provider');
+    let menu = document.getElementById('dropdown-menu');
+
+    // Move the menu to document.body to avoid stacking/overflow issues
+    if (menu && menu.parentElement !== document.body) {
+      document.body.appendChild(menu);
+      // ensure it's fully on top and can receive pointer events
+      menu.style.zIndex = '2147483647';
+      menu.style.pointerEvents = 'auto';
+    }
+
+    function positionAndToggleMenu() {
+      const rect = dropdownButton.getBoundingClientRect();
+      menu.style.left = rect.left + 'px';
+      menu.style.top = (rect.bottom + 6) + 'px';
+      menu.style.minWidth = Math.max(rect.width, 200) + 'px';
+      // ensure the menu can scroll internally
+      menu.style.overflow = 'auto';
+      const isOpen = dropdownWrapper.classList.toggle('open');
+      // sync an 'open' class on the detached menu for CSS
+      menu.classList.toggle('open', isOpen);
+    }
+
+    dropdownButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      positionAndToggleMenu();
+    });
+
+    // Rewire option clicks (menu now lives in body)
+    dropdownOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        const value = option.getAttribute('data-value');
+        const text = option.textContent;
+        dropdownButton.textContent = text;
+        searchProvider.value = value;
+        dropdownWrapper.classList.remove('open');
+        if (menu) menu.classList.remove('open');
+      });
+    });
+
+    // Fermer le dropdown en cliquant ailleurs (considère aussi le menu déplacé)
+    document.addEventListener('click', (e) => {
+      const insideWrapper = dropdownWrapper.contains(e.target);
+      const insideMenu = menu && menu.contains(e.target);
+      if (!insideWrapper && !insideMenu) {
+        dropdownWrapper.classList.remove('open');
+        if (menu) menu.classList.remove('open');
+      }
+    });
+
+    // Close dropdown on resize; do NOT auto-close on page scroll so internal scrolling works
+    window.addEventListener('resize', () => {
+      dropdownWrapper.classList.remove('open');
+      if (menu) menu.classList.remove('open');
+    });
+
+    // Prevent page scroll while the mouse wheel is over the dropdown menu and allow internal scrolling
+    menu.addEventListener('wheel', function(e){
+      // if menu can scroll in the direction, allow it; otherwise prevent page scroll
+      const delta = e.deltaY;
+      const atTop = menu.scrollTop === 0;
+      const atBottom = Math.ceil(menu.scrollTop + menu.clientHeight) >= menu.scrollHeight;
+      if ((delta < 0 && !atTop) || (delta > 0 && !atBottom)) {
+        // let the menu scroll
+        e.stopPropagation();
+      } else {
+        // prevent body from scrolling when user is interacting with the menu
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }, { passive: false });
+  </script>
+
+  <script>
+    function scrollToSection(selector){
+      const el = document.querySelector(selector);
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  </script>
+
+  <script>
+    // Rotating typewriter-style phrases in hero
+    (function(){
+      const phrases = [
+        'Data Breach Detection',
+        'Discord Intelligence',
+        'FiveM Analytics',
+        'OSINT Investigation'
+      ];
+      const el = document.getElementById('rotating-text');
+      if(!el) return;
+      let idx=0, charIdx=0, forward=true;
+      const typeSpeed=120, pause=1800, eraseSpeed=60;
+
+      function tick(){
+        const text = phrases[idx];
+        if(forward){
+          charIdx++;
+          el.textContent = text.slice(0,charIdx);
+          if(charIdx>=text.length){ forward=false; setTimeout(tick,pause); return }
+          setTimeout(tick,typeSpeed);
+        } else {
+          charIdx--;
+          el.textContent = text.slice(0,charIdx);
+          if(charIdx<=0){ forward=true; idx=(idx+1)%phrases.length; setTimeout(tick,300); return }
+          setTimeout(tick,eraseSpeed);
+        }
+      }
+      tick();
+    })();
+  </script>
+</body>
+</html>

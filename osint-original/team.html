@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Équipe — SeekData</title>
+
+  <link rel="stylesheet" href="seeknow.css">
+
+  <style>
+    /* ===== PAGE WIDTH ===== */
+    body.team-page .container {
+      max-width: 1400px;
+    }
+
+    /* ===== GRID ===== */
+    #team-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 64px;
+      padding: 3rem 0;
+      perspective: 2000px;
+    }
+
+    /* ===== CARD ===== */
+    .team-card {
+      width: 100%;
+      max-width: 1280px;
+      margin-inline: auto;
+      background: linear-gradient(135deg, #0f0f0f, #090909);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      transform-style: preserve-3d;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      position: relative;
+      min-height: 320px;
+    }
+
+    .team-card:hover {
+      box-shadow: 0 35px 90px rgba(0,0,0,0.85),
+                  0 0 60px rgba(255,255,255,0.08);
+    }
+
+    /* ===== BANNER ===== */
+    .team-banner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      opacity: 0.35;
+      z-index: 1;
+    }
+
+    /* ===== CONTENT ===== */
+    .team-content {
+      padding: 2.5rem 3rem 2.8rem;
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== AVATAR ===== */
+    .team-avatar {
+      width: 170px;
+      height: 170px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.15);
+      box-shadow: 
+        0 14px 40px rgba(0,0,0,0.6),
+        0 0 20px rgba(0,180,255,0.8),
+        0 0 40px rgba(0,180,255,0.5),
+        inset 0 0 20px rgba(0,180,255,0.3);
+      flex-shrink: 0;
+      background: #000;
+    }
+
+    /* ===== TEXT ===== */
+    .team-info {
+      flex: 1;
+    }
+
+    .team-name {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.3rem;
+      color: #fff;
+      position: relative;
+    }
+
+    /* Neon underline + orbiting dots for pseudo */
+    .team-name .name-text {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 6px;
+      z-index: 3;
+    }
+
+      /* Ensure name-text is positioned; sparkle effect removed per request */
+      .team-name .name-text { position: relative; display:inline-block; }
+
+      /* Make header clearly visible on this page */
+      .site-header { z-index: 9999; background: rgba(0,0,0,0.78); }
+      .site-header .nav-menu a { color: #fff !important; }
+
+    /* orbit dots removed per user request */
+
+    .team-role {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1.2rem;
+    }
+
+    /* ===== BADGES ===== */
+    .badges {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .badge-icon {
+      width: 56px;
+      height: 56px;
+      opacity: 0.95;
+      transition: filter 0.2s ease;
+    }
+
+    /* Remove enlarge-on-hover effect; keep subtle highlight only */
+    .badge-icon:hover {
+      transform: none;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.12));
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .team-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .team-avatar {
+        width: 140px;
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+
+<body class="team-page">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand"><img src="image2.png" class="brand-thumb" alt="logo"></a>
+    <nav class="nav">
+      <ul class="nav-menu">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="features.html">Fonctionnalités</a></li>
+        <li><a href="pricing.html">Tarifs</a></li>
+        <li><a href="notes.html">Notes de patch</a></li>
+        <li><a href="team.html">Équipe</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-auth">
+      <a class="btn btn-auth" href="login.html">Connexion</a>
+      <a class="btn btn-auth" href="register.html">S'inscrire</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="min-height:40vh;padding-top:6rem;">
+    <div class="container hero-inner">
+      <h1 class="hero-title">L’équipe</h1>
+      <p class="hero-sub">Les gardiens du projet SeekData</p>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <div id="team-grid"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div style="text-align:center;color:rgba(255,255,255,0.5);font-size:0.85rem">
+    © SeekData 2025
+  </div>
+</footer>
+
+<script>
+async function loadTeam() {
+  const [teamRes, badgesRes] = await Promise.all([
+    fetch('./data/team.json'),
+    fetch('./data/badges.json')
+  ]);
+
+  const team = await teamRes.json();
+  const badges = await badgesRes.json();
+  const grid = document.getElementById('team-grid');
+
+  grid.innerHTML = team.map(m => {
+    const badgeHTML = (m.badges || []).map(b => {
+      return `<img src="${b.icon}" class="badge-icon" title="${b.text}">`;
+    }).join('');
+
+    return `
+      <div class="team-card tilt">
+        <div class="team-banner" style="background-image:url('${m.banner_url || ''}')"></div>
+        <div class="team-content">
+          <img src="${m.avatar_url}" class="team-avatar">
+          <div class="team-info">
+            <div class="team-name">
+              <span class="name-text">${m.pseudo}</span>
+            </div>
+            <div class="team-role">${m.title}</div>
+            <div class="badges">${badgeHTML}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  /* ===== 3D TILT ===== */
+  document.querySelectorAll('.tilt').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const rx = ((y - r.height / 2) / r.height) * -8;
+      const ry = ((x - r.width / 2) / r.width) * 8;
+
+      card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(900px) rotateX(0) rotateY(0)';
+    });
+  });
+}
+
+loadTeam();
+</script>
+
+</body>
+</html>

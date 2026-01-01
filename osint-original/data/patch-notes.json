@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Version 2.0 - Refonte Complète",
+    "version": "2.0.0",
+    "date": "2024-12-15",
+    "body": "Lancement de la nouvelle version avec:\n- Interface entièrement redesignée\n- Système de recherche amélioré\n- Support multi-plateforme\n- Base de données optimisée"
+  },
+  {
+    "id": 2,
+    "title": "Correctifs de sécurité",
+    "version": "1.9.8",
+    "date": "2024-11-20",
+    "body": "Correctifs importants:\n- Validation améliorée des entrées\n- Chiffrement des données sensibles\n- Protection contre les attaques CSRF\n- Audit de sécurité complet"
+  },
+  {
+    "id": 3,
+    "title": "Nouvelles fonctionnalités",
+    "version": "1.9.0",
+    "date": "2024-10-10",
+    "body": "Nous avons ajouté:\n- Recherche avancée par filtres\n- Historique de recherche persistant\n- Export de résultats en CSV\n- Tableau de bord personnalisé"
+  }
+]

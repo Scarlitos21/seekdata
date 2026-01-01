@@ -1,0 +1,17 @@
+{
+  "owner": {
+    "label": "Owner",
+    "icon": "assets/crown_badge.png",
+    "color": "white"
+  },
+  "dev": {
+    "label": "Developer",
+    "icon": "assets/dev.png",
+    "color": "white"
+  },
+  "admin": {
+    "label": "Admin",
+    "icon": "assets/admin_badge.png",
+    "color": "white"
+  }
+}

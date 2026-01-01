@@ -1,0 +1,34 @@
+Bien mais enfaite pas besoin de crée sur le panel genre creator le truc cree un membre de lquipe genre crée direct un fichier pour que je mette sur netlify genre un script pré fais et genre jaurais juste a changer genre le lien de lavatar etc :[
+  {
+    "id": "1",
+    "pseudo": "Développeur 1",
+    "discord_id": "YOUR_DISCORD_ID_1",
+    "title": "Founder",
+    "avatar_url": "https://via.placeholder.com/140?text=Dev1",
+    "banner_url": "https://via.placeholder.com/300x260?text=Banner1",
+    "badges": [
+      {
+        "text": "Créateur",
+        "icon": "assets/creator.svg"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "pseudo": "Développeur 2",
+    "discord_id": "YOUR_DISCORD_ID_2",
+    "title": "Developer",
+    "avatar_url": "https://via.placeholder.com/140?text=Dev2",
+    "banner_url": "https://via.placeholder.com/300x260?text=Banner2",
+    "badges": [
+      {
+        "text": "Admin",
+        "icon": "assets/admin.svg"
+      }
+    ]
+  }
+]
+
+
+
+donc fais en sorte que la page team lise le fichier team.json et affiche bah voila quoi et aussi quiand je fais une recherche IP bah sa fais rien , crée les fichier nécessaire aussi integre les sysdtem de recherche genre quand lutilisateur est connecter il a un menu deroulant a coter du menu recherche a lacceuil pour faire le type de recherhc equil veut donc intergre la commande Snusbase , redline , ipinfo , breachvip , leakcheck , phoneinfo roblox , steam et tout sa il sont dans le script osintlabs.py c'est le script du bot donc aussi fais une box differante pour chaque resulatst de chaque api genre aussi si le mec a un compte FREE il a pas acces a snusbase etc il a juste acces a leakkcheck avec la reche4rche email aussi que tu mette le reste accessible pour les autre tarifs donc starter et pro , epense bien aussi a faire les modif coter script du powershell a la fin
