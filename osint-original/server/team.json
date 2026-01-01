@@ -1,0 +1,62 @@
+                                        [
+  {
+    "id": "02454e477cac4161",
+    "pseudo": "\\'HatSu",
+    "discord_id": "1455743481971736700",
+    "avatar_url": "https://cdn.discordapp.com/embed/avatars/1.png",
+    "banner_url": null,
+    "title": "Owner",
+    "created_by": "creator",
+    "created_at": "2025-12-31T18:59:41.366Z",
+    "updated_at": "2025-12-31T18:59:49.975Z",
+    "updated_by": "creator",
+    "badges": [
+      {
+        "text": "Crown Badge",
+        "icon": "assets/crown_badge.png"
+      },
+      {
+        "text": "Helper Badge",
+        "icon": "assets/helper_badge.png"
+      },
+      {
+        "text": "Admin Badge",
+        "icon": "assets/admin_badge.png"
+      }
+    ]
+  },
+  {
+    "id": "553824c152aac6bc",
+    "pseudo": "\\'Scarlet",
+    "discord_id": "1444024153157013524",
+    "avatar_url": "https://cdn.discordapp.com/embed/avatars/4.png",
+    "banner_url": null,
+    "title": "Owner",
+    "created_by": "creator",
+    "created_at": "2025-12-31T19:01:12.383Z",
+    "badges": [
+      {
+        "text": "Admin Badge",
+        "icon": "assets/admin_badge.png"
+      },
+      {
+        "text": "Crown Badge",
+        "icon": "assets/crown_badge.png"
+      },
+      {
+        "text": "Dev Badge",
+        "icon": "assets/dev_badge.png"
+      },
+      {
+        "text": "Helper Badge",
+        "icon": "assets/helper_badge.png"
+      },
+      {
+        "text": "Mod Badge",
+        "icon": "assets/mod_badge.png"
+      }
+    ],
+    "updated_at": "2025-12-31T19:01:18.292Z",
+    "updated_by": "creator"
+  }
+]

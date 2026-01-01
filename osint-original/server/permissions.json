@@ -1,0 +1,33 @@
+{
+  "permissions": [
+    "manage_users",
+    "manage_blacklist",
+    "view_logs",
+    "toggle_maintenance",
+    "manage_admins",
+    "kill_switch",
+    "use_osint_api"
+  ],
+  "roles": {
+    "CREATOR": {
+      "manage_users": true,
+      "manage_blacklist": true,
+      "view_logs": true,
+      "toggle_maintenance": true,
+      "manage_admins": true,
+      "kill_switch": true,
+      "use_osint_api": true
+    },
+    "ADMIN": {
+      "manage_users": true,
+      "manage_blacklist": false,
+      "view_logs": true,
+      "toggle_maintenance": false,
+      "manage_admins": false,
+      "kill_switch": false,
+      "use_osint_api": true
+    },
+    "USER": {
+    }
+  }
+}

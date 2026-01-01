@@ -1,0 +1,90 @@
+[
+  {
+    "id": "public_archives",
+    "name": "Archives Publiques",
+    "type": "database",
+    "url": "https://archives.local/api/search",
+    "enabled": true,
+    "reliability": 0.95,
+    "avg_latency_ms": 250,
+    "last_check": "2025-12-30T01:48:42.665Z",
+    "status": "online"
+  },
+  {
+    "id": "email_db",
+    "name": "Email Database",
+    "type": "breach_db",
+    "url": "https://emaildb.local/search",
+    "enabled": true,
+    "reliability": 0.98,
+    "avg_latency_ms": 180,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  },
+  {
+    "id": "username_index",
+    "name": "Username Index",
+    "type": "social_media",
+    "url": "https://usernames.local/api/search",
+    "enabled": true,
+    "reliability": 0.92,
+    "avg_latency_ms": 320,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  },
+  {
+    "id": "ip_geolocation",
+    "name": "IP Geolocation",
+    "type": "network",
+    "url": "https://geo.local/lookup",
+    "enabled": true,
+    "reliability": 0.99,
+    "avg_latency_ms": 100,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  },
+  {
+    "id": "domain_whois",
+    "name": "Domain WHOIS",
+    "type": "domain_registry",
+    "url": "https://whois.local/api/domain",
+    "enabled": true,
+    "reliability": 0.97,
+    "avg_latency_ms": 200,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  },
+  {
+    "id": "dark_web_index",
+    "name": "Dark Web Index",
+    "type": "darkweb",
+    "url": "https://darkindex.local/search",
+    "enabled": false,
+    "reliability": 0.85,
+    "avg_latency_ms": 500,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "offline"
+  },
+  {
+    "id": "phone_lookup",
+    "name": "Phone Lookup",
+    "type": "telecom",
+    "url": "https://phone.local/api/search",
+    "enabled": true,
+    "reliability": 0.88,
+    "avg_latency_ms": 280,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  },
+  {
+    "id": "business_registry",
+    "name": "Business Registry",
+    "type": "commerce",
+    "url": "https://business.local/search",
+    "enabled": true,
+    "reliability": 0.96,
+    "avg_latency_ms": 220,
+    "last_check": "2025-12-30T01:48:42.666Z",
+    "status": "online"
+  }
+]

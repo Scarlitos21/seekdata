@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeekData - Administrator Panel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="auth-wall" class="auth-wall hidden">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="auth-logo">SEEKDATA</div>
+          <div class="auth-subtitle">Administration Panel</div>
+        </div>
+        
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <input type="text" id="email-input" placeholder="Admin Login" required>
+          </div>
+          <div class="form-group">
+            <input type="password" id="password-input" placeholder="Password" required>
+          </div>
+          <button type="submit" class="auth-button">Access Admin Panel</button>
+          <div id="auth-error" class="auth-error"></div>
+        </form>
+      </div>
+    </div>
+    <div id="admin-panel" class="admin-panel hidden">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">SEEKDATA</div>
+          <div class="logo-sub">ADMIN</div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-section="overview">
+            <span class="icon">◆</span>
+            <span class="text">Overview</span>
+          </button>
+          <button class="nav-item" data-section="users">
+            <span class="icon">⚙</span>
+            <span class="text">Utilisateurs</span>
+          </button>
+          <button class="nav-item" data-section="searches">
+            <span class="icon">◈</span>
+            <span class="text">Recherches</span>
+          </button>
+          <button class="nav-item" data-section="subscriptions">
+            <span class="icon">○</span>
+            <span class="text">Abonnements</span>
+          </button>
+          <button class="nav-item" data-section="blacklist">
+            <span class="icon">✕</span>
+            <span class="text">Blacklist</span>
+          </button>
+          <button class="nav-item" data-section="whitelist">
+            <span class="icon">✓</span>
+            <span class="text">Whitelist</span>
+          </button>
+          <button class="nav-item" data-section="logs">
+            <span class="icon">≡</span>
+            <span class="text">Logs & Audit</span>
+          </button>
+          <button class="nav-item" data-section="apis">
+            <span class="icon">∞</span>
+            <span class="text">APIs & Sources</span>
+          </button>
+          <button class="nav-item" data-section="settings">
+            <span class="icon">⊙</span>
+            <span class="text">Paramètres</span>
+          </button>
+          <button class="nav-item" data-section="patches">
+            <span class="icon">📝</span>
+            <span class="text">Notes de patch</span>
+          </button>
+          <button class="nav-item" data-section="team">
+            <span class="icon">👥</span>
+            <span class="text">Équipe</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button id="logout-btn" class="logout-btn">
+            <span class="icon">↪</span>
+            <span class="text">Déconnexion</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <main class="content">
+        <!-- Header -->
+        <header class="top-bar">
+          <div class="top-bar-left">
+            <h1 id="section-title">Overview</h1>
+          </div>
+          <div class="top-bar-right">
+            <div class="admin-info">
+              <span id="admin-email">admin@seekdata.io</span>
+              <span id="current-time">00:00:00</span>
+            </div>
+          </div>
+        </header>
+
+        <!-- Sections -->
+        <div class="sections-container">
+          <!-- OVERVIEW -->
+          <section id="section-overview" class="section active">
+            <div class="metrics-grid">
+              <div class="metric-card">
+                <div class="metric-label">Utilisateurs Totaux</div>
+                <div class="metric-value" id="stat-total-users">0</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Actifs Aujourd'hui</div>
+                <div class="metric-value" id="stat-active-today">0</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Recherches (24h)</div>
+                <div class="metric-value" id="stat-searches-24h">0</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Alertes Sécurité</div>
+                <div class="metric-value danger" id="stat-security-alerts">0</div>
+              </div>
+            </div>
+
+            <div class="section-grid">
+              <div class="panel">
+                <h3>Actions Système</h3>
+                <div class="action-group">
+                  <button class="action-btn" onclick="admin.triggerMaintenance()">Mode Maintenance</button>
+                  <button class="action-btn" onclick="admin.backupDB()">Backup DB</button>
+                  <button class="action-btn" onclick="admin.clearLogs()">Effacer Logs</button>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3>Activité Récente</h3>
+                <div id="recent-activity" class="activity-list">
+                  <!-- Filled by JS -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- USERS -->
+          <section id="section-users" class="section">
+            <div class="section-header">
+              <input type="text" id="users-search" placeholder="Rechercher par email ou IP..." class="search-input">
+              <select id="users-status-filter" class="filter-select">
+                <option value="">Tous les statuts</option>
+                <option value="active">Actif</option>
+                <option value="blocked">Bloqué</option>
+                <option value="banned">Banni</option>
+              </select>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>IP Création</th>
+                  <th>Dernière Connexion</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-tbody">
+                <tr><td colspan="6">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- SEARCHES -->
+          <section id="section-searches" class="section">
+            <div class="section-header">
+              <input type="text" id="searches-email-filter" placeholder="Filtrer par email..." class="search-input">
+              <select id="searches-type-filter" class="filter-select">
+                <option value="">Tous les types</option>
+                <option value="domain">Domaine</option>
+                <option value="email">Email</option>
+                <option value="phone">Téléphone</option>
+                <option value="ip">IP</option>
+              </select>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Requête</th>
+                  <th>Type</th>
+                  <th>Source</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="searches-tbody">
+                <tr><td colspan="6">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- SUBSCRIPTIONS -->
+          <section id="section-subscriptions" class="section">
+            <div class="section-header">
+              <select id="subscriptions-plan-filter" class="filter-select">
+                <option value="">Tous les plans</option>
+                <option value="FREE">Free</option>
+                <option value="PRO">Pro</option>
+                <option value="ENTERPRISE">Enterprise</option>
+              </select>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Plan Actuel</th>
+                  <th>Date Souscription</th>
+                  <th>Renouvellement</th>
+                  <th>Quota</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="subscriptions-tbody">
+                <tr><td colspan="6">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- BLACKLIST -->
+          <section id="section-blacklist" class="section">
+            <div class="section-header">
+              <div class="header-controls">
+                <select id="blacklist-type-input" class="filter-select">
+                  <option value="email">Email</option>
+                  <option value="ip">IP</option>
+                  <option value="domain">Domain</option>
+                </select>
+                <input type="text" id="blacklist-value-input" placeholder="Valeur à ajouter..." class="search-input">
+                <button class="action-btn" onclick="admin.addToBlacklist()">+ Ajouter</button>
+              </div>
+            </div>
+
+            <div id="blacklist-items" class="items-list">
+              <!-- Filled by JS -->
+            </div>
+            <div style="margin-top:18px">
+              <h4>Blacklist Logs (immutable)</h4>
+              <table class="data-table" style="margin-top:8px">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Type</th>
+                    <th>Value / Details</th>
+                    <th>IP</th>
+                    <th>Actor</th>
+                  </tr>
+                </thead>
+                <tbody id="blacklist-logs-tbody">
+                  <tr><td colspan="5">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- WHITELIST -->
+          <section id="section-whitelist" class="section">
+            <div class="section-header">
+              <div class="header-controls">
+                <select id="whitelist-type-input" class="filter-select">
+                  <option value="email">Email</option>
+                  <option value="ip">IP</option>
+                </select>
+                <input type="text" id="whitelist-value-input" placeholder="Valeur à ajouter..." class="search-input">
+                <button class="action-btn" onclick="admin.addToWhitelist()">+ Ajouter</button>
+              </div>
+            </div>
+
+            <div id="whitelist-items" class="items-list">
+              <!-- Filled by JS -->
+            </div>
+          </section>
+
+          <!-- LOGS -->
+          <section id="section-logs" class="section">
+            <div class="section-header">
+              <select id="logs-type-filter" class="filter-select">
+                <option value="">Tous les types</option>
+                <option value="login">Login</option>
+                <option value="blocked">Bloqué</option>
+                <option value="admin_action">Action Admin</option>
+              </select>
+              <select id="logs-severity-filter" class="filter-select">
+                <option value="">Toutes les sévérités</option>
+                <option value="critical">Critique</option>
+                <option value="warning">Alerte</option>
+                <option value="info">Info</option>
+              </select>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Type</th>
+                  <th>Sévérité</th>
+                  <th>Description</th>
+                  <th>IP</th>
+                </tr>
+              </thead>
+              <tbody id="logs-tbody">
+                <tr><td colspan="5">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </section>
+
+          <!-- APIS & SOURCES -->
+          <section id="section-apis" class="section">
+            <div class="section-header">
+              <h3>Sources OSINT</h3>
+            </div>
+
+            <div class="sources-grid" id="sources-grid">
+              <!-- Filled by JS -->
+            </div>
+          </section>
+
+          <!-- SETTINGS -->
+          <section id="section-settings" class="section">
+            <div class="settings-group">
+              <h3>Paramètres Généraux</h3>
+              <div class="settings-item">
+                <label>
+                  <input type="checkbox" id="setting-registrations" onchange="admin.updateSetting('registrations_enabled', this.checked)">
+                  Activer les inscriptions
+                </label>
+              </div>
+              <div class="settings-item">
+                <label>
+                  <input type="checkbox" id="setting-maintenance" onchange="admin.updateSetting('maintenance_mode', this.checked)">
+                  Mode maintenance
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <h3>Limites</h3>
+              <div class="settings-item">
+                <label>Comptes par IP:</label>
+                <input type="number" id="setting-accounts-per-ip" min="1" max="100" value="5">
+                <button class="action-btn" onclick="admin.updateSetting('max_accounts_per_ip', document.getElementById('setting-accounts-per-ip').value)">Appliquer</button>
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <h3>Message Global</h3>
+              <textarea id="setting-global-message" placeholder="Message affiché à tous les utilisateurs..." style="width:100%; height:100px; padding:10px; border:1px solid #333; background:#0a0a0a; color:#fff;"></textarea>
+              <button class="action-btn" onclick="admin.updateSetting('global_message', document.getElementById('setting-global-message').value)">Sauvegarder</button>
+            </div>
+          </section>
+          <!-- PATCH NOTES -->
+          <section id="section-patches" class="section">
+            <div class="section-header">
+              <h3>Notes de patch</h3>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <input id="patch-title" placeholder="Titre" style="flex:1;padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff">
+                <input id="patch-version" placeholder="Version (ex: v1.2.3)" style="width:160px;padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff">
+              </div>
+            </div>
+            <div style="margin-top:8px">
+              <textarea id="patch-body" placeholder="Détails de la note" style="width:100%;height:120px;padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff"></textarea>
+              <div style="margin-top:8px;display:flex;gap:8px">
+                <button class="action-btn" onclick="admin.addPatchNote()">Ajouter (owner only)</button>
+                <div id="patch-list" style="flex:1"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TEAM MANAGEMENT -->
+          <section id="section-team" class="section">
+            <div class="section-header">
+              <h3>Équipe</h3>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+              <input id="team-username" placeholder="Pseudo Discord" style="padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff">
+              <input id="team-discord-id" placeholder="ID Discord" style="padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff">
+              <input id="team-role" placeholder="Role" style="padding:8px;border-radius:6px;background:#0a0a0a;border:1px solid #222;color:#fff">
+              <button class="action-btn" onclick="admin.addTeamMember()">Ajouter</button>
+            </div>
+            <div id="team-list" style="margin-top:12px"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

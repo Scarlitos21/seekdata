@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cb1d27a7c6edbe00",
+    "user_email": "test@test.com",
+    "query": "test@gmail.com",
+    "query_type": "email",
+    "results_count": 69,
+    "sources_queried": [
+      "public_archives",
+      "email_db",
+      "username_index",
+      "ip_geolocation",
+      "domain_whois",
+      "phone_lookup",
+      "business_registry"
+    ],
+    "duration_ms": 329,
+    "status": "success",
+    "created_at": "2025-12-30T18:05:44.435Z",
+    "ip": "::1",
+    "country": "XX",
+    "quota_used": 1
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "suspended": false,
+  "suspend_reason": null,
+  "suspend_by": null,
+  "suspend_until": null,
+  "maintenance_mode": false,
+  "maintenance_message": "Correction des APIs et voila",
+  "maintenance_start": null,
+  "maintenance_end": null
+}
