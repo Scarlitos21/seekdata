@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <script>
+    // Production backend URL for admin panel
+    window.API_URL = 'https://seekdata-backend.onrender.com';
+  </script>
   <div id="app">
     <div id="auth-wall" class="auth-wall hidden">
       <div class="auth-container">
@@ -157,6 +161,8 @@
                 <option value="blocked">Bloqué</option>
                 <option value="banned">Banni</option>
               </select>
+              <button class="btn-primary" onclick="admin.exportUsers('csv')" style="margin-left: auto; padding: 8px 12px; cursor: pointer;">📥 CSV</button>
+              <button class="btn-primary" onclick="admin.exportUsers('json')" style="padding: 8px 12px; cursor: pointer;">📥 JSON</button>
             </div>
 
             <table class="data-table">
@@ -303,6 +309,8 @@
                 <option value="warning">Alerte</option>
                 <option value="info">Info</option>
               </select>
+              <button class="btn-primary" onclick="admin.exportLogs('csv')" style="margin-left: auto; padding: 8px 12px; cursor: pointer;">📥 CSV</button>
+              <button class="btn-primary" onclick="admin.exportLogs('json')" style="padding: 8px 12px; cursor: pointer;">📥 JSON</button>
             </div>
 
             <table class="data-table">

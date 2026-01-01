@@ -1,7 +1,8 @@
 // SEEKDATA (static-adapted): interactions, animations, simulated auth + client-side search demo
 
 // ===== API CONFIGURATION =====
-const API_URL = 'https://seekdata.onrender.com';
+// Production backend (Render). Change if your backend URL differs.
+const API_URL = 'https://seekdata-backend.onrender.com';
 
 document.addEventListener('DOMContentLoaded', ()=>{
   // ===== SEARCH TAGS =====

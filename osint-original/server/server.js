@@ -34,7 +34,25 @@ db.initializeDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-app.use(cors());
+
+// CORS: allow frontend on Netlify to call this backend
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'https://seekdata.netlify.app',
+      'http://localhost:3000',
+      'http://localhost:3001',
+      process.env.FRONTEND_URL
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 function getRequestInfo(req) {

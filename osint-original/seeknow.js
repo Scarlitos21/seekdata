@@ -281,7 +281,8 @@ async function performSearch(query){
   if(token){
     try{
       showSearchMessage('Chargement...', 'info');
-      const res = await fetch('/api/search', { method:'POST', headers: {'content-type':'application/json','authorization':'Bearer '+token}, body: JSON.stringify({ query }) });
+      const backend = window.API_URL || 'https://seekdata-backend.onrender.com';
+      const res = await fetch(`${backend}/api/search`, { method:'POST', headers: {'content-type':'application/json','authorization':'Bearer '+token}, body: JSON.stringify({ query }) });
       if(res.status === 401){ showSearchMessage('Non autorisé — veuillez vous connecter.', 'error'); return []; }
       if(res.status === 403){ const b = await res.json().catch(()=>({})); showSearchMessage(b && b.message ? b.message : 'Interdit', 'error'); return []; }
       const j = await res.json().catch(()=>({}));
@@ -296,7 +297,8 @@ async function performSearch(query){
 // Best-effort log sender for client-side actions
 function sendLog(payload){
   try{
-    fetch('http://localhost:3000/api/logs', {
+    const backend = window.API_URL || 'https://seekdata-backend.onrender.com';
+    fetch(backend + '/api/logs', {
       method: 'POST',
       headers: {'content-type':'application/json'},
       body: JSON.stringify(payload)

@@ -1,6 +1,5 @@
 # Backend directories - not deployed to Netlify
-server/
-admin/
+# (server and admin removed from top-level ignore so they can be committed for Render)
 
 # Node modules (if backend is run locally)
 node_modules/
@@ -8,6 +7,8 @@ node_modules/
 # Environment variables
 .env
 .env.local
+# Ensure server env stays local
+server/.env
 
 # Logs
 *.log
