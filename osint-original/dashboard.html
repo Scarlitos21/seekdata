@@ -1,245 +1,1093 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard - SeekData</title>
   <link rel="stylesheet" href="seeknow.css?v=1">
-  <link rel="stylesheet" href="dashboard.css?v=1">
+  <style>
+    * { box-sizing: border-box; }
+    
+    .dashboard-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: 70px 1fr;
+      min-height: 100vh;
+      background: #000;
+      color: #fff;
+    }
+
+    /* TOP BAR */
+    .dashboard-topbar {
+      grid-column: 1 / -1;
+      background: rgba(10, 10, 10, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-info > span:first-child {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-info > span:last-child {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .plan-badge {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+    }
+
+    .plan-badge.free {
+      background: rgba(100, 100, 100, 0.3);
+      color: #999;
+      border: 1px solid rgba(150, 150, 150, 0.2);
+    }
+
+    .plan-badge.starter {
+      background: rgba(100, 150, 255, 0.2);
+      color: #87ceeb;
+      border: 1px solid rgba(100, 150, 255, 0.3);
+    }
+
+    .plan-badge.pro {
+      background: rgba(255, 215, 0, 0.2);
+      color: #ffd700;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-upgrade {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-upgrade:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-logout {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .btn-logout:hover {
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #fff;
+    }
+
+    /* SIDEBAR */
+    .dashboard-sidebar {
+      grid-column: 1;
+      grid-row: 2;
+      background: rgba(10, 10, 10, 0.5);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 24px 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-label {
+      padding: 0 24px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-item {
+      padding: 12px 24px;
+      margin: 0;
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .sidebar-item.active {
+      background: rgba(102, 126, 234, 0.15);
+      border-left: 3px solid #667eea;
+      padding-left: 21px;
+      color: #fff;
+    }
+
+    .sidebar-item.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .sidebar-item.locked::after {
+      content: "🔒";
+      margin-left: auto;
+    }
+
+    /* MAIN CONTENT */
+    .dashboard-main {
+      grid-column: 2;
+      grid-row: 2;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .page-header {
+      margin-bottom: 32px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 14px;
+    }
+
+    /* OVERVIEW GRID */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stat-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* FORM & INPUTS */
+    .search-form {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* TABLE */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    .data-table thead {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .data-table th {
+      padding: 12px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 14px;
+    }
+
+    .data-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* ALERTS */
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .alert-warning {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      color: #ffc107;
+    }
+
+    .alert-error {
+      background: rgba(244, 67, 54, 0.1);
+      border: 1px solid rgba(244, 67, 54, 0.3);
+      color: #f44336;
+    }
+
+    .alert-success {
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      color: #4caf50;
+    }
+
+    /* SKELETON LOADER */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 100%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-line {
+      height: 12px;
+      margin: 8px 0;
+    }
+
+    .skeleton-block {
+      height: 60px;
+      margin: 12px 0;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #0a0a0a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 24px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* EMPTY STATE */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .empty-state h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 14px;
+    }
+
+    /* HIDDEN */
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-sidebar {
+        display: none;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-main {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0;">
+  <div class="dashboard-wrapper">
+    <!-- TOP BAR -->
+    <div class="dashboard-topbar">
+      <div class="topbar-left">
+        <div class="user-profile">
+          <div class="user-avatar" id="avatar">U</div>
+          <div class="user-info">
+            <span id="username">Utilisateur</span>
+            <span class="plan-badge" id="planBadge">FREE</span>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn-upgrade" id="upgradeBtn">Upgrade</button>
+        <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="dashboard-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Navigation</div>
+        <button class="sidebar-item active" data-page="overview">📊 Aperçu</button>
+        <button class="sidebar-item" data-page="account">👤 Mon compte</button>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Recherche</div>
+        <button class="sidebar-item" data-page="search">🔍 Recherches</button>
+        <button class="sidebar-item" data-page="history">📜 Historique</button>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Avancé</div>
+        <button class="sidebar-item locked" id="advancedBtn">⚡ OSINT Avancé</button>
+        <button class="sidebar-item locked" id="apiBtn">🔑 API Access</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="dashboard-main">
+      <!-- OVERVIEW PAGE -->
+      <div id="page-overview" class="page">
+        <div class="page-header">
+          <h1>Bienvenue</h1>
+          <p>Tableau de bord de votre compte SeekData</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="overview-grid">
+          <div class="stat-card">
+            <div class="stat-label">Recherches totales</div>
+            <div class="stat-value" id="statTotalSearches">-</div>
+            <div class="stat-sub">Depuis votre inscription</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Quota aujourd'hui</div>
+            <div class="stat-value" id="statQuotaRemaining">-</div>
+            <div class="stat-sub" id="statQuotaText">Limite: -</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Plan actif</div>
+            <div class="stat-value" id="statPlan">FREE</div>
+            <div class="stat-sub" id="statPlanExpiry">-</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-label">Dernière recherche</div>
+            <div class="stat-value" id="statLastSearch">-</div>
+            <div class="stat-sub" id="statLastSearchTime">-</div>
+          </div>
+        </div>
+
+        <div id="limitationsContainer"></div>
+      </div>
+
+      <!-- SEARCH PAGE -->
+      <div id="page-search" class="page hidden">
+        <div class="page-header">
+          <h1>Recherches</h1>
+          <p>Effectuez une recherche OSINT</p>
+        </div>
+
+        <div id="searchAlerts"></div>
+
+        <div class="search-form">
+          <div class="form-group">
+            <label>Type de recherche</label>
+            <select id="searchType">
+              <option value="email">Email</option>
+              <option value="domain">Domaine</option>
+              <option value="ip">Adresse IP</option>
+              <option value="username">Pseudo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Valeur</label>
+            <input type="text" id="searchValue" placeholder="Entrez votre requête...">
+          </div>
+
+          <div class="form-group">
+            <label>Source (optionnel)</label>
+            <select id="searchSource">
+              <option value="">Automatique</option>
+              <option value="snusbase">Snusbase</option>
+              <option value="haveibeenpwned">HaveIBeenPwned</option>
+              <option value="local">Base locale</option>
+            </select>
+          </div>
+
+          <button class="btn-primary" id="searchBtn">Lancer la recherche</button>
+        </div>
+
+        <div id="searchResults"></div>
+      </div>
+
+      <!-- HISTORY PAGE -->
+      <div id="page-history" class="page hidden">
+        <div class="page-header">
+          <h1>Historique des recherches</h1>
+          <p>Vos recherches récentes</p>
+        </div>
+
+        <div id="historyContainer"></div>
+      </div>
+
+      <!-- ACCOUNT PAGE -->
+      <div id="page-account" class="page hidden">
+        <div class="page-header">
+          <h1>Mon compte</h1>
+          <p>Gérez votre profil et paramètres</p>
+        </div>
+
+        <div class="search-form" style="max-width: 600px;">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="accountEmail" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Plan actuel</label>
+            <input type="text" id="accountPlan" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Inscrit depuis</label>
+            <input type="text" id="accountCreated" disabled>
+          </div>
+
+          <div class="form-group">
+            <label>Dernière connexion</label>
+            <input type="text" id="accountLastLogin" disabled>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0;">
+
+          <h3 style="margin-top: 24px; margin-bottom: 16px;">Changer le mot de passe</h3>
+
+          <div class="form-group">
+            <label>Mot de passe actuel</label>
+            <input type="password" id="currentPassword" placeholder="••••••••">
+          </div>
+
+          <div class="form-group">
+            <label>Nouveau mot de passe</label>
+            <input type="password" id="newPassword" placeholder="••••••••">
+          </div>
+
+          <div class="form-group">
+            <label>Confirmer</label>
+            <input type="password" id="confirmPassword" placeholder="••••••••">
+          </div>
+
+          <button class="btn-primary" id="changePasswordBtn">Modifier le mot de passe</button>
+
+          <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0;">
+
+          <button class="btn-primary" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);" id="deleteAccountBtn">Supprimer le compte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Message</h2>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://seekdata-backend.onrender.com/api/admin/system"></script>
   <script>
-    // Check maintenance status before page loads
+    const API_URL = 'https://seekdata-backend.onrender.com';
+    let currentUser = null;
+    let currentPage = 'overview';
+
+    // Check maintenance
     (async () => {
       try {
-        const res = await fetch('https://seekdata-backend.onrender.com/api/admin/system', { 
-          method: 'GET',
-          timeout: 3000 
-        });
+        const res = await fetch(API_URL + '/api/admin/system', { timeout: 3000 });
         const system = await res.json();
         if (system && system.maintenance_mode === true) {
           window.location.href = '/maintenance';
         }
-      } catch (e) {
-        // Silently ignore
-      }
+      } catch (e) {}
     })();
-  </script>
-  <style>
-    .dashboard-container { display: none; }
-    .dashboard-container.active { display: grid; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .nav-item { cursor: pointer; }
-    .nav-item.active { background: rgba(255, 255, 255, 0.1); border-left: 3px solid #fff; }
-    .logout-btn { margin-top: auto; color: #ff6b6b; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
-    th { background: #1a1a1a; font-weight: bold; }
-    tr:hover { background: #252525; }
-    .severity-badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: bold;
+
+    // Init
+    document.addEventListener('DOMContentLoaded', async () => {
+      const token = sessionStorage.getItem('seekdata_token');
+      if (!token) {
+        window.location.href = '/login';
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL + '/api/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!res.ok) {
+          sessionStorage.removeItem('seekdata_token');
+          window.location.href = '/login';
+          return;
+        }
+
+        const data = await res.json();
+        currentUser = data.user;
+        initDashboard();
+      } catch (e) {
+        window.location.href = '/login';
+      }
+    });
+
+    function initDashboard() {
+      // Update header
+      document.getElementById('username').textContent = currentUser.email;
+      document.getElementById('avatar').textContent = currentUser.email[0].toUpperCase();
+      updatePlanBadge();
+
+      // Setup navigation
+      document.querySelectorAll('.sidebar-item:not(.locked)').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const page = btn.dataset.page;
+          switchPage(page);
+        });
+      });
+
+      // Setup buttons
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        sessionStorage.removeItem('seekdata_token');
+        window.location.href = '/';
+      });
+
+      document.getElementById('upgradeBtn').addEventListener('click', () => {
+        showModal('Upgrade Plan', '<p style="margin:0">Les upgrades sont actuellement en setup. Reviens bientôt!</p>');
+      });
+
+      // Load initial page
+      loadOverviewPage();
     }
-    .severity-badge.info { background: #0066cc; color: #fff; }
-    .severity-badge.warning { background: #ff9800; color: #fff; }
-    .severity-badge.critical { background: #ff3333; color: #fff; }
-    .stat-card { background: #1a1a1a; padding: 20px; border-radius: 8px; border-left: 3px solid #666; }
-    .stat-card.high { border-left-color: #4ade80; }
-    .stat-label { color: #999; font-size: 14px; }
-    .stat-value { font-size: 32px; font-weight: bold; margin: 10px 0; }
-    .stat-description { color: #666; font-size: 12px; }
-    .overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
-    .btn-primary { background: #0066cc; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-    .btn-primary:hover { background: #0052a3; }
-  </style>
-</head>
-<body class="page-light">
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="brand"><img src="image2.png" alt="logo" class="brand-thumb"></a>
-      <nav class="nav">
-        <ul class="nav-menu">
-          <li><a href="index.html">Accueil</a></li>
-          <li><a href="features.html">Fonctionnalités</a></li>
-          <li><a href="pricing.html">Tarifs</a></li>
-          <li><a href="notes.html">Notes</a></li>
-        </ul>
-      </nav>
-      <div class="nav-right nav-auth">
-        <a class="btn btn-auth" href="login.html">Connexion</a>
-        <a class="btn btn-auth" href="register.html">S'inscrire</a>
-      </div>
-    </div>
-  </header>
 
-  <div class="grid-mask" aria-hidden="true"></div>
+    function updatePlanBadge() {
+      const badge = document.getElementById('planBadge');
+      const plan = currentUser.plan || 'FREE';
+      badge.textContent = plan;
+      badge.className = `plan-badge ${plan.toLowerCase()}`;
+    }
 
-  <div class="dashboard-container active">
-    <!-- SIDEBAR -->
-    <aside class="dashboard-sidebar">
-      <div class="sidebar-header">
-        <a href="index.html" class="brand">
-          <img src="image2.png" alt="logo" class="brand-thumb">
-        </a>
-      </div>
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-tab="overview">
-          <span class="nav-icon">📊</span>
-          <span class="nav-label">Aperçu</span>
-        </button>
-        <button class="nav-item" data-tab="history">
-          <span class="nav-icon">🔍</span>
-          <span class="nav-label">Historique</span>
-        </button>
-        <button class="nav-item" data-tab="security">
-          <span class="nav-icon">🔐</span>
-          <span class="nav-label">Sécurité</span>
-        </button>
-        <button class="nav-item" data-tab="settings">
-          <span class="nav-icon">⚙️</span>
-          <span class="nav-label">Paramètres</span>
-        </button>
-        <hr class="sidebar-divider">
-        <button class="nav-item logout-btn" id="logout-btn">
-          <span class="nav-icon">🚪</span>
-          <span class="nav-label">Déconnexion</span>
-        </button>
-      </nav>
-    </aside>
+    function switchPage(page) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
 
-    <!-- MAIN CONTENT -->
-    <main class="dashboard-main">
-      <!-- HEADER -->
-      <header class="dashboard-header">
-        <div class="header-left">
-          <h1 class="page-title">Dashboard</h1>
-        </div>
-        <div class="header-right">
-          <div class="user-info">
-            <div class="user-name" id="user-name">Utilisateur</div>
-            <div class="user-plan" id="plan-status">Plan: FREE</div>
-          </div>
-          <div class="user-avatar" id="user-avatar">U</div>
-        </div>
-      </header>
+      // Show selected page
+      document.getElementById(`page-${page}`).classList.remove('hidden');
+      document.querySelector(`[data-page="${page}"]`).classList.add('active');
 
-      <!-- ONGLETS -->
-      <div class="dashboard-content">
-        <!-- APERÇU -->
-        <section class="tab-content active" id="tab-overview">
-          <h2>Aperçu</h2>
-          <div class="overview-grid">
-            <div class="stat-card high">
-              <div class="stat-label">Recherches effectuées</div>
-              <div class="stat-value" id="total-searches">0</div>
-              <div class="stat-description">Au total</div>
-            </div>
-            <div class="stat-card high">
-              <div class="stat-label">Aujourd'hui</div>
-              <div class="stat-value" id="searches-today">0</div>
-              <div class="stat-description">Requêtes</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Dernière recherche</div>
-              <div class="stat-value" style="font-size: 16px;" id="last-search-time">—</div>
-              <div class="stat-description">Date et heure</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Statut du compte</div>
-              <div class="stat-value" style="font-size: 18px; color: #4ade80;" id="account-status">Actif</div>
-              <div class="stat-description">Toutes les fonctionnalités</div>
-            </div>
-          </div>
+      currentPage = page;
 
-          <h3 style="margin-top: 30px;">Plan et Quotas</h3>
-          <div class="stat-card">
-            <div class="stat-label">Plan actuel</div>
-            <div class="stat-value" id="current-plan">FREE</div>
-            <div class="stat-description" id="plan-info">Accès limité - 5 requêtes par jour</div>
-          </div>
+      // Load page content
+      switch (page) {
+        case 'overview': loadOverviewPage(); break;
+        case 'search': loadSearchPage(); break;
+        case 'history': loadHistoryPage(); break;
+        case 'account': loadAccountPage(); break;
+      }
+    }
 
-          <div class="stat-card" style="margin-top: 15px;">
-            <div class="stat-label">Requêtes restantes</div>
-            <div class="stat-value" id="remaining-searches">5</div>
-            <div class="stat-description">Pour aujourd'hui</div>
-          </div>
+    async function loadOverviewPage() {
+      try {
+        const histRes = await fetch(API_URL + '/api/history', {
+          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('seekdata_token')}` }
+        });
 
-          <h3 style="margin-top: 30px;">Dernière connexion</h3>
-          <div class="stat-card">
-            <div class="stat-value" style="font-size: 18px;" id="last-login-time">—</div>
-          </div>
-        </section>
+        const history = histRes.ok ? await histRes.json() : { history: [] };
+        const searches = history.history || [];
 
-        <!-- HISTORIQUE -->
-        <section class="tab-content" id="tab-history">
-          <h2>Historique de recherches</h2>
-          <table>
+        document.getElementById('statTotalSearches').textContent = searches.length;
+
+        // Quota
+        const quota = currentUser.quota_remaining || 5;
+        const limit = currentUser.quota_limit || 5;
+        document.getElementById('statQuotaRemaining').textContent = quota;
+        document.getElementById('statQuotaText').textContent = `Limite: ${limit}/jour`;
+
+        // Plan
+        document.getElementById('statPlan').textContent = currentUser.plan || 'FREE';
+        document.getElementById('statPlanExpiry').textContent = 'Pas d\'expiration';
+
+        // Last search
+        if (searches.length > 0) {
+          const last = searches[searches.length - 1];
+          document.getElementById('statLastSearch').textContent = last.query || '-';
+          document.getElementById('statLastSearchTime').textContent = new Date(last.created_at).toLocaleDateString('fr-FR');
+        }
+
+        // Show limitations
+        if (currentUser.plan === 'FREE') {
+          const alert = document.createElement('div');
+          alert.className = 'alert alert-warning';
+          alert.innerHTML = `⚠️ <strong>Plan FREE limité</strong> - Vous avez accès à 5 recherches/jour. <button class="btn-upgrade" style="margin-left: auto; padding: 4px 12px; font-size: 12px;">Upgrade</button>`;
+          document.getElementById('alertContainer').appendChild(alert);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function loadSearchPage() {
+      // Check if user can search
+      if (currentUser.plan === 'FREE' && (currentUser.quota_remaining || 0) <= 0) {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-error';
+        alert.textContent = '❌ Quota atteint - Upgrade pour continuer';
+        document.getElementById('searchAlerts').appendChild(alert);
+      }
+
+      document.getElementById('searchBtn').addEventListener('click', performSearch, { once: true });
+    }
+
+    async function performSearch() {
+      const type = document.getElementById('searchType').value;
+      const value = document.getElementById('searchValue').value;
+      const source = document.getElementById('searchSource').value;
+
+      if (!value.trim()) {
+        showAlert('searchAlerts', 'Veuillez entrer une valeur', 'error');
+        return;
+      }
+
+      document.getElementById('searchBtn').disabled = true;
+      document.getElementById('searchBtn').textContent = 'Recherche en cours...';
+
+      try {
+        const res = await fetch(API_URL + '/api/search', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('seekdata_token')}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ query: value, type, source })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showAlert('searchAlerts', data.message || 'Erreur lors de la recherche', 'error');
+          return;
+        }
+
+        // Display results
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = `
+          <div class="alert alert-success">✓ ${data.results?.length || 0} résultat(s) trouvé(s)</div>
+          <pre style="background: rgba(0,0,0,0.5); padding: 16px; border-radius: 8px; overflow-x: auto;">
+${JSON.stringify(data.results || [], null, 2)}
+          </pre>
+        `;
+      } catch (e) {
+        showAlert('searchAlerts', 'Erreur serveur', 'error');
+      } finally {
+        document.getElementById('searchBtn').disabled = false;
+        document.getElementById('searchBtn').textContent = 'Lancer la recherche';
+      }
+    }
+
+    async function loadHistoryPage() {
+      try {
+        const res = await fetch(API_URL + '/api/history', {
+          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('seekdata_token')}` }
+        });
+
+        const data = await res.json();
+        const searches = data.history || [];
+
+        if (searches.length === 0) {
+          document.getElementById('historyContainer').innerHTML = '<div class="empty-state"><h3>Aucune recherche</h3><p>Vous n\'avez pas effectué de recherche pour le moment.</p></div>';
+          return;
+        }
+
+        const table = `
+          <table class="data-table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Requête</th>
-                <th>Résultats</th>
-                <th>Date / Heure</th>
+                <th>Recherche</th>
+                <th>Type</th>
+                <th>Source</th>
+                <th>Date</th>
+                <th>Statut</th>
               </tr>
             </thead>
-            <tbody id="search-history-tbody">
-              <tr><td colspan="4" style="text-align:center;color:#666;">Chargement...</td></tr>
+            <tbody>
+              ${searches.map(s => `
+                <tr>
+                  <td><code>${s.query || '-'}</code></td>
+                  <td>${s.query_type || '-'}</td>
+                  <td>${s.source || '-'}</td>
+                  <td>${new Date(s.created_at).toLocaleDateString('fr-FR')}</td>
+                  <td>${s.status === 'success' ? '✓' : '✗'}</td>
+                </tr>
+              `).join('')}
             </tbody>
           </table>
-        </section>
+        `;
 
-        <!-- SÉCURITÉ -->
-        <section class="tab-content" id="tab-security">
-          <h2>Sécurité du compte</h2>
-          <h3>Connexions récentes</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Adresse IP</th>
-                <th>Date / Heure</th>
-              </tr>
-            </thead>
-            <tbody id="login-history-tbody">
-              <tr><td colspan="3" style="text-align:center;color:#666;">Chargement...</td></tr>
-            </tbody>
-          </table>
+        document.getElementById('historyContainer').innerHTML = table;
+      } catch (e) {
+        console.error(e);
+      }
+    }
 
-          <h3 style="margin-top: 30px;">Actions de sécurité</h3>
-          <div style="margin-top: 15px;">
-            <button class="btn-primary" onclick="disconnectAllSessions()" style="background: #ff6b6b;">
-              Déconnecter toutes les sessions
-            </button>
-          </div>
-        </section>
+    async function loadAccountPage() {
+      document.getElementById('accountEmail').value = currentUser.email;
+      document.getElementById('accountPlan').value = currentUser.plan || 'FREE';
+      document.getElementById('accountCreated').value = new Date(currentUser.created_at).toLocaleDateString('fr-FR');
+      document.getElementById('accountLastLogin').value = currentUser.last_login ? new Date(currentUser.last_login).toLocaleString('fr-FR') : 'Jamais';
 
-        <!-- PARAMÈTRES -->
-        <section class="tab-content" id="tab-settings">
-          <h2>Paramètres</h2>
-          <div class="stat-card">
-            <h3>Informations du compte</h3>
-            <p><strong>Email :</strong> <span id="current-user">—</span></p>
-            <p><strong>Créé le :</strong> <span id="created-date">—</span></p>
-            <p><strong>Total de connexions :</strong> <span id="total-logins">0</span></p>
-          </div>
+      document.getElementById('changePasswordBtn').addEventListener('click', changePassword, { once: true });
+      document.getElementById('deleteAccountBtn').addEventListener('click', deleteAccount, { once: true });
+    }
 
-          <div class="stat-card" style="margin-top: 15px;">
-            <h3>Notifications</h3>
-            <label style="display:flex; align-items:center; gap:10px; margin:10px 0;">
-              <input type="checkbox" checked>
-              Notifications par email
-            </label>
-            <label style="display:flex; align-items:center; gap:10px; margin:10px 0;">
-              <input type="checkbox" checked>
-              Alertes de sécurité
-            </label>
-          </div>
-        </section>
-      </div>
-    </main>
-  </div>
+    async function changePassword() {
+      const current = document.getElementById('currentPassword').value;
+      const newPwd = document.getElementById('newPassword').value;
+      const confirm = document.getElementById('confirmPassword').value;
 
-  <script src="dashboard-user.js"></script>
+      if (!current || !newPwd || !confirm) {
+        showAlert('alertContainer', 'Tous les champs sont requis', 'error');
+        return;
+      }
+
+      if (newPwd !== confirm) {
+        showAlert('alertContainer', 'Les mots de passe ne correspondent pas', 'error');
+        return;
+      }
+
+      if (newPwd.length < 8) {
+        showAlert('alertContainer', 'Le mot de passe doit contenir au moins 8 caractères', 'error');
+        return;
+      }
+
+      try {
+        const res = await fetch(API_URL + '/api/change-password', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('seekdata_token')}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ current_password: current, new_password: newPwd })
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          showAlert('alertContainer', err.message || 'Erreur', 'error');
+          return;
+        }
+
+        showAlert('alertContainer', 'Mot de passe modifié avec succès', 'success');
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      } catch (e) {
+        showAlert('alertContainer', 'Erreur serveur', 'error');
+      }
+    }
+
+    function deleteAccount() {
+      showModal('Supprimer le compte', `
+        <p style="margin: 0 0 16px;">Êtes-vous SÛR? Cette action est irréversible.</p>
+        <input type="password" id="deletePassword" placeholder="Entrez votre mot de passe" style="width: 100%; padding: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; color: #fff; margin-bottom: 16px;">
+        <button class="btn-primary" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%); width: 100%;" onclick="confirmDeleteAccount()">Supprimer</button>
+      `);
+    }
+
+    async function confirmDeleteAccount() {
+      const pwd = document.getElementById('deletePassword').value;
+      if (!pwd) return showAlert('alertContainer', 'Entrez votre mot de passe', 'error');
+
+      try {
+        const res = await fetch(API_URL + '/api/delete-account', {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${sessionStorage.getItem('seekdata_token')}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ password: pwd })
+        });
+
+        if (res.ok) {
+          sessionStorage.removeItem('seekdata_token');
+          window.location.href = '/';
+        } else {
+          showAlert('alertContainer', 'Mot de passe incorrect', 'error');
+        }
+      } catch (e) {
+        showAlert('alertContainer', 'Erreur serveur', 'error');
+      }
+    }
+
+    function showAlert(containerId, message, type) {
+      const container = document.getElementById(containerId);
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.textContent = message;
+      container.appendChild(alert);
+      setTimeout(() => alert.remove(), 4000);
+    }
+
+    function showModal(title, body) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = body;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
+
+    document.getElementById('modal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) closeModal();
+    });
+  </script>
 </body>
 </html>
