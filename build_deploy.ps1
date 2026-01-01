@@ -142,3 +142,32 @@ Log "Files copied: $copiedCount" "INFO"
 Log "Files skipped: $skippedCount" "INFO"
 Log "Deploy path: $DestPath" "INFO"
 Log "Deployment completed successfully!" "INFO"
+# Git operations
+Log "=== Git Operations ===" "INFO"
+try {
+    Log "Checking git status..." "INFO"
+    $gitStatus = git status --porcelain
+    if ($gitStatus) {
+        Log "Staging changes..." "INFO"
+        git add -A
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        Log "Committing changes..." "INFO"
+        git commit -m "Build deployment: $timestamp - Frontend updates"
+        Log "Pushing to origin main..." "INFO"
+        git push origin main
+        Log "Git push completed successfully" "INFO"
+    } else {
+        Log "No changes to commit" "INFO"
+    }
+} catch {
+    Log "Git operation failed: $_" "ERROR"
+}
+
+# Netlify deployment hint
+Log "=== Deployment Summary ===" "INFO"
+Log "Frontend files ready in: $DestPath" "INFO"
+Log "To deploy to Netlify:" "INFO"
+Log "  1. Files in '$DestPath' are ready for deployment" "INFO"
+Log "  2. Ensure 'netlify.toml' is in deploy folder" "INFO"
+Log "  3. Use 'netlify deploy --prod' to push to production" "INFO"
+Log "Backend: Already deployed at https://seekdata-backend.onrender.com" "INFO"

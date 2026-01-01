@@ -142,6 +142,19 @@ a{color:inherit;text-decoration:none}
 /* If register/login appear as .btn.solid in header, ensure they stay white on hover */
 .nav-right .btn.solid:hover, .nav-right .btn-auth:hover{background:#fff;color:#000;box-shadow:none;transform:none}
 
+/* Ensure the dashboard button shown when logged-in matches Login/Register styling */
+.nav-right #open-dashboard, #open-dashboard.btn-auth {
+  background:#fff;
+  color:#000;
+  border:1px solid rgba(0,0,0,0.08);
+  box-shadow:0 4px 15px rgba(0,0,0,0.06);
+}
+.nav-right #open-dashboard:hover, #open-dashboard.btn-auth:hover {
+  background:#f6f6f6;
+  color:#000;
+  box-shadow:none;
+}
+
 main{margin-top:40px}
 
 /* BUTTONS */

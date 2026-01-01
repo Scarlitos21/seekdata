@@ -154,7 +154,6 @@ class AdminPanel {
   }
 
   async makeRequest(method, url, body = null) {
-    const fullUrl = url.startsWith('http') ? url : (this.apiBase + url);
     const options = {
       method,
       headers: {
@@ -165,6 +164,7 @@ class AdminPanel {
 
     if (body) options.body = JSON.stringify(body);
 
+    const fullUrl = (typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'))) ? url : (this.apiBase + url);
     const response = await fetch(fullUrl, options);
     if (response.status === 401) {
       sessionStorage.clear();
@@ -224,14 +224,7 @@ class AdminPanel {
       tbody.innerHTML = users.map(u => `
         <tr>
           <td>${u.email}</td>
-          <td>
-            <select class="plan-selector" onchange="admin.changePlan('${u.id}', this.value)" style="padding:4px; border-radius:3px; cursor:pointer;">
-              <option value="FREE" ${(u.plan === 'FREE') ? 'selected' : ''}>FREE</option>
-              <option value="BASIC" ${(u.plan === 'BASIC') ? 'selected' : ''}>BASIC</option>
-              <option value="PRO" ${(u.plan === 'PRO') ? 'selected' : ''}>PRO</option>
-              <option value="ENTERPRISE" ${(u.plan === 'ENTERPRISE') ? 'selected' : ''}>ENTERPRISE</option>
-            </select>
-          </td>
+          <td>${u.plan || 'FREE'}</td>
           <td><code>${u.ip_created || 'N/A'}</code></td>
           <td>${u.last_login ? new Date(u.last_login).toLocaleString('fr-FR') : 'Jamais'}</td>
           <td>${u.status || 'active'}</td>
@@ -529,7 +522,7 @@ class AdminPanel {
   // Team management
   async loadTeam() {
     try {
-      const res = await fetch('/api/team');
+      const res = await this.makeRequest('GET', '/api/team');
       const team = await res.json();
       const container = document.getElementById('team-list');
       if (!Array.isArray(team) || team.length === 0) { container.innerHTML = '<div style="color:#888">Aucun membre</div>'; return; }
@@ -574,106 +567,6 @@ class AdminPanel {
   }
 
   // ADMIN ACTIONS
-  async changePlan(userId, newPlan) {
-    if (!newPlan) return;
-    try {
-      const res = await this.makeRequest('PUT', `/api/admin/users/${userId}/plan`, { plan: newPlan });
-      const data = await res.json();
-      
-      if (res.ok) {
-        alert(`✅ Plan changé en ${newPlan}`);
-        this.loadUsers();
-      } else {
-        alert(`❌ Erreur: ${data.error || 'Impossible de changer le plan'}`);
-        this.loadUsers();
-      }
-    } catch (err) {
-      console.error('Change plan error:', err);
-      alert('❌ Erreur réseau');
-      this.loadUsers();
-    }
-  }
-
-  exportUsers(format = 'csv') {
-    const tbody = document.getElementById('users-tbody');
-    if (!tbody) return;
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    
-    if (format === 'csv') {
-      let csv = 'Email,Plan,IP Créé,Dernier Login,Status\n';
-      rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 5) {
-          const email = cells[0].textContent.trim();
-          const planSelect = cells[1].querySelector('select');
-          const plan = planSelect ? planSelect.value : cells[1].textContent.trim();
-          const ip = cells[2].textContent.replace(/[^0-9.]/g, '');
-          const login = cells[3].textContent.trim();
-          const status = cells[4].textContent.trim();
-          csv += `"${email}","${plan}","${ip}","${login}","${status}"\n`;
-        }
-      });
-      this.downloadFile(csv, 'users.csv', 'text/csv');
-    } else if (format === 'json') {
-      const data = rows.map(row => {
-        const cells = row.querySelectorAll('td');
-        const planSelect = cells[1].querySelector('select');
-        return {
-          email: cells[0].textContent.trim(),
-          plan: planSelect ? planSelect.value : cells[1].textContent.trim(),
-          ip_created: cells[2].textContent.trim(),
-          last_login: cells[3].textContent.trim(),
-          status: cells[4].textContent.trim()
-        };
-      });
-      this.downloadFile(JSON.stringify(data, null, 2), 'users.json', 'application/json');
-    }
-  }
-
-  exportLogs(format = 'csv') {
-    const tbody = document.getElementById('logs-tbody');
-    if (!tbody) return;
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    
-    if (format === 'csv') {
-      let csv = 'Type,Description,Timestamp,IP\n';
-      rows.forEach(row => {
-        const cells = row.querySelectorAll('td');
-        if (cells.length >= 4) {
-          const type = cells[0].textContent.trim();
-          const desc = cells[1].textContent.trim();
-          const time = cells[2].textContent.trim();
-          const ip = cells[3].textContent.replace(/[^0-9.]/g, '');
-          csv += `"${type}","${desc}","${time}","${ip}"\n`;
-        }
-      });
-      this.downloadFile(csv, 'logs.csv', 'text/csv');
-    } else if (format === 'json') {
-      const data = rows.map(row => {
-        const cells = row.querySelectorAll('td');
-        return {
-          type: cells[0].textContent.trim(),
-          description: cells[1].textContent.trim(),
-          timestamp: cells[2].textContent.trim(),
-          ip: cells[3].textContent.trim()
-        };
-      });
-      this.downloadFile(JSON.stringify(data, null, 2), 'logs.json', 'application/json');
-    }
-  }
-
-  downloadFile(content, filename, type) {
-    const blob = new Blob([content], { type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
   async blockUser(userId) {
     if (!confirm('Bloquer cet utilisateur?')) return;
     
