@@ -85,7 +85,7 @@ foreach ($category in $fileLists) {
 }
 
 # Copy directories
-$directories = @('assets', 'data')
+$directories = @('assets', 'data', 'admin')
 foreach ($dir in $directories) {
     $srcDir = Join-Path $SourcePath $dir
     if (Test-Path $srcDir) {
@@ -103,7 +103,7 @@ foreach ($dir in $directories) {
 
 # Verify critical files
 Log "Verifying deployment..." "INFO"
-$criticalFiles = @('index.html','team.html','seeknow.css','data/team.json','assets/js/seeknow.js')
+$criticalFiles = @('index.html','team.html','seeknow.css','data/team.json','assets/js/seeknow.js','admin/index.html','admin/app.js')
 $allValid = $true
 foreach ($file in $criticalFiles) {
     $destFile = Join-Path $DestPath $file

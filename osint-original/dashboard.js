@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     // Verify token is still valid
-    const meRes = await fetch('/api/me', {
+    const meRes = await fetch('https://seekdata-backend.onrender.com/api/me', {
       headers: { 'Authorization': `Bearer ${TOKEN}` }
     });
 
@@ -177,7 +177,7 @@ function switchTab(tabName) {
 
 async function loadOverviewData() {
   try {
-    const res = await fetch('/api/me', {
+    const res = await fetch('https://seekdata-backend.onrender.com/api/me', {
       headers: { 'Authorization': `Bearer ${TOKEN}` }
     });
 
@@ -235,7 +235,7 @@ async function performSearch() {
   }
 
   try {
-    const res = await fetch('/api/search', {
+    const res = await fetch('https://seekdata-backend.onrender.com/api/search', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${TOKEN}`,
@@ -276,7 +276,7 @@ async function performSearch() {
 
 async function loadHistory() {
   try {
-    const res = await fetch('/api/history', {
+    const res = await fetch('https://seekdata-backend.onrender.com/api/history', {
       headers: { 'Authorization': `Bearer ${TOKEN}` }
     });
 
@@ -352,7 +352,7 @@ async function changePassword() {
   }
 
   try {
-    const res = await fetch('/api/change-password', {
+    const res = await fetch('https://seekdata-backend.onrender.com/api/change-password', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${TOKEN}`,
@@ -390,7 +390,7 @@ function confirmDeleteAccount() {
 
 async function deleteAccount() {
   try {
-    const res = await fetch('/api/delete-account', {
+    const res = await fetch('https://seekdata-backend.onrender.com/api/delete-account', {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${TOKEN}` }
     });

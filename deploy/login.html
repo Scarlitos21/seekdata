@@ -233,7 +233,7 @@
     const token = sessionStorage.getItem('seekdata_token');
     if (token) {
       // Validate token on backend
-      fetch('/api/me', {
+      fetch('https://seekdata-backend.onrender.com/api/me', {
         headers: { 'Authorization': `Bearer ${token}` }
       }).then(r => {
         if (r.ok) {

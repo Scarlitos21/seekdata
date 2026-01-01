@@ -271,7 +271,7 @@
     // Load maintenance details
     async function loadDetails() {
       try {
-        const res = await fetch('/api/admin/system', {
+        const res = await fetch('https://seekdata-backend.onrender.com/api/admin/system', {
           headers: { 'Authorization': `Bearer ${sessionStorage.getItem('admin_token')}` }
         });
         
@@ -329,7 +329,7 @@
       // Check maintenance status every 10 seconds
       setInterval(async () => {
         try {
-          const res = await fetch('/api/admin/system');
+          const res = await fetch('https://seekdata-backend.onrender.com/api/admin/system');
           if (res.ok) {
             const system = await res.json();
             if (!system.maintenance_mode) {

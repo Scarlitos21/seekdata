@@ -2,6 +2,40 @@
   publish = "."
   command = "echo 'No build command needed'"
 
+# Admin panel - proxy to Render backend
+[[redirects]]
+  from = "/admin"
+  to = "https://seekdata-backend.onrender.com/admin/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://seekdata-backend.onrender.com/admin/:splat"
+  status = 200
+  force = true
+
+# Creator panel - proxy to Render backend
+[[redirects]]
+  from = "/creator"
+  to = "https://seekdata-backend.onrender.com/admin/creator/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/creator/*"
+  to = "https://seekdata-backend.onrender.com/admin/creator/:splat"
+  status = 200
+  force = true
+
+# API calls - proxy to Render backend
+[[redirects]]
+  from = "/api/*"
+  to = "https://seekdata-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback - keep on Netlify for homepage and other pages
 [[redirects]]
   from = "/*"
   to = "/index.html"
