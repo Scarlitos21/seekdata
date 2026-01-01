@@ -217,27 +217,118 @@ class AdminPanel {
 
       const tbody = document.getElementById('users-tbody');
       if (!Array.isArray(users) || users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6">Aucun utilisateur</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7">Aucun utilisateur</td></tr>';
         return;
       }
 
       tbody.innerHTML = users.map(u => `
         <tr>
           <td>${u.email}</td>
-          <td>${u.plan || 'FREE'}</td>
+          <td><span style="background:${u.plan === 'PRO' ? '#ffd700' : u.plan === 'STARTER' ? '#87ceeb' : '#999'};padding:4px 8px;border-radius:4px;font-weight:600;font-size:0.85rem">${u.plan || 'FREE'}</span></td>
           <td><code>${u.ip_created || 'N/A'}</code></td>
           <td>${u.last_login ? new Date(u.last_login).toLocaleString('fr-FR') : 'Jamais'}</td>
           <td>${u.status || 'active'}</td>
           <td>
-            <div style="display:flex; gap:5px;">
-              ${u.status === 'active' ? `<button class="action-btn danger" onclick="admin.blockUser('${u.id}')">Bloquer</button>` : `<button class="action-btn" onclick="admin.unblockUser('${u.id}')">Débloquer</button>`}
-              <button class="action-btn danger" onclick="admin.banUser('${u.id}')">Bannir</button>
-            </div>
+            <button class="action-btn" onclick="admin.viewUserProfile('${u.email}')">→ Gérer</button>
           </td>
         </tr>
       `).join('');
     } catch (err) {
       console.error('Users error:', err);
+    }
+  }
+
+  async viewUserProfile(email) {
+    try {
+      const res = await this.makeRequest('GET', `/api/admin/users/${email}`);
+      const user = await res.json();
+      
+      // Créer un modal pour le profil utilisateur
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      `;
+
+      const searchCount = (user.search_history || []).length;
+      const ipList = [...new Set((user.search_history || []).map(s => s.ip).filter(ip => ip))];
+      const country = user.country || 'N/A';
+
+      modal.innerHTML = `
+        <div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto;color:#fff">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+            <h2 style="margin:0;color:#fff">${user.email}</h2>
+            <button onclick="this.closest('div').parentElement.remove()" style="background:none;border:none;color:#fff;font-size:24px;cursor:pointer">&times;</button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+            <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222">
+              <div style="color:#aaa;font-size:0.9rem">Plan</div>
+              <div style="font-size:1.5rem;font-weight:700;color:#ffd700">${user.plan || 'FREE'}</div>
+            </div>
+            <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222">
+              <div style="color:#aaa;font-size:0.9rem">Recherches</div>
+              <div style="font-size:1.5rem;font-weight:700">${searchCount}</div>
+            </div>
+            <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222">
+              <div style="color:#aaa;font-size:0.9rem">Localisation</div>
+              <div style="font-size:1rem;font-weight:600">${country}</div>
+            </div>
+            <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222">
+              <div style="color:#aaa;font-size:0.9rem">Inscrit</div>
+              <div style="font-size:0.9rem;font-weight:600">${user.created_at ? new Date(user.created_at).toLocaleDateString('fr-FR') : 'N/A'}</div>
+            </div>
+          </div>
+
+          <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222;margin-bottom:16px">
+            <div style="color:#aaa;font-size:0.9rem;margin-bottom:8px">IPs utilisées</div>
+            <div>${ipList.length > 0 ? ipList.map(ip => `<code style="background:#111;padding:4px 8px;border-radius:4px;margin:4px 4px 4px 0;display:inline-block">${ip}</code>`).join('') : 'N/A'}</div>
+          </div>
+
+          <div style="background:#0a0a0a;padding:16px;border-radius:8px;border:1px solid #222;margin-bottom:16px">
+            <div style="color:#aaa;font-size:0.9rem;margin-bottom:12px">Changer le plan</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="action-btn" onclick="admin.changePlanForUser('${user.email}', 'FREE')">FREE</button>
+              <button class="action-btn" onclick="admin.changePlanForUser('${user.email}', 'STARTER')">STARTER</button>
+              <button class="action-btn" onclick="admin.changePlanForUser('${user.email}', 'PRO')">PRO</button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px">
+            <button class="action-btn danger" onclick="admin.blockUser('${user.email}')">Bloquer</button>
+            <button class="action-btn danger" onclick="admin.deleteUser('${user.email}')">Supprimer</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+    } catch (err) {
+      console.error('Profile error:', err);
+      alert('Erreur lors du chargement du profil');
+    }
+  }
+
+  async changePlanForUser(email, newPlan) {
+    try {
+      const res = await this.makeRequest('PUT', `/api/admin/users/${email}/plan`, { plan: newPlan });
+      if (res.ok) {
+        alert(`Plan changé à ${newPlan}`);
+        document.querySelector('[style*="position: fixed"]').remove();
+        this.loadUsers();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Erreur');
+      }
+    } catch (err) {
+      console.error('Error:', err);
     }
   }
 
@@ -494,9 +585,34 @@ class AdminPanel {
         list.innerHTML = '<div style="color:#888">Aucune note</div>';
         return;
       }
-      list.innerHTML = notes.map(n => `<div style="padding:8px 0;border-bottom:1px solid #111"><strong>${n.title}</strong> <div style="color:#aaa;font-size:0.9rem">${new Date(n.date).toLocaleString()}</div></div>`).join('');
+      list.innerHTML = notes.map(n => `
+        <div style="padding:12px;border:1px solid #222;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <strong>${n.title}</strong> 
+            <div style="color:#aaa;font-size:0.9rem">${new Date(n.date).toLocaleString()}</div>
+          </div>
+          <button class="action-btn danger" onclick="admin.deletePatchNote('${n.id}')">Supprimer</button>
+        </div>
+      `).join('');
     } catch (e) {
       console.error('Patch notes load error', e);
+    }
+  }
+
+  async deletePatchNote(noteId) {
+    if (!confirm('Supprimer cette note de patch ?')) return;
+    try {
+      const res = await this.makeRequest('DELETE', `/api/admin/patch-notes/${noteId}`);
+      if (res.ok) {
+        alert('Note supprimée');
+        this.loadPatchNotes();
+      } else {
+        const err = await res.json();
+        alert(err.error || 'Erreur');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Erreur serveur');
     }
   }
 
@@ -754,12 +870,26 @@ class AdminPanel {
     }
   }
 
-  async blockUser(userId) {
-    if (!confirm('Bloquer cet utilisateur ?')) return;
+  async blockUser(email) {
+    if (!confirm(`Bloquer ${email} ?`)) return;
     try {
-      const res = await this.makeRequest('POST', `/api/admin/users/${userId}/block`);
+      const res = await this.makeRequest('POST', `/api/admin/users/${email}/block`);
       if (res.ok) {
         alert('Utilisateur bloqué');
+        this.loadUsers();
+      }
+    } catch (err) {
+      console.error('Error:', err);
+    }
+  }
+
+  async deleteUser(email) {
+    if (!confirm(`Supprimer définitivement ${email} ?`)) return;
+    if (!confirm('Cette action est irréversible!')) return;
+    try {
+      const res = await this.makeRequest('DELETE', `/api/admin/users/${email}`);
+      if (res.ok) {
+        alert('Utilisateur supprimé');
         this.loadUsers();
       }
     } catch (err) {

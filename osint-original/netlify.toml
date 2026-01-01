@@ -2,12 +2,6 @@
   publish = "."
   command = "echo 'No build command needed'"
 
-# Maintenance mode - serve maintenance.html on 503 from backend
-[[redirects]]
-  from = "/"
-  to = "/maintenance"
-  status = 503
-
 # Admin panel - proxy to Render backend
 [[redirects]]
   from = "/admin"

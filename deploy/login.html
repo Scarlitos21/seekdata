@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Connexion — SeekData</title>
   <link rel="stylesheet" href="seeknow.css?v=1">
+  <script>
+    // Check maintenance status before page loads
+    (async () => {
+      try {
+        const res = await fetch('https://seekdata-backend.onrender.com/api/admin/system', { 
+          method: 'GET',
+          timeout: 3000 
+        });
+        const system = await res.json();
+        if (system && system.maintenance_mode === true) {
+          window.location.href = '/maintenance';
+        }
+      } catch (e) {
+        // Silently ignore
+      }
+    })();
+  </script>
   <style>
     .login-container {
       position: fixed;
