@@ -864,8 +864,8 @@
         document.getElementById('statTotalSearches').textContent = searches.length;
 
         // Quota
-        const quota = currentUser.quota_remaining || 5;
-        const limit = currentUser.quota_limit || 5;
+        const quota = currentUser.quota?.remaining || currentUser.quota_remaining || 5;
+        const limit = currentUser.quota?.daily_quota || currentUser.quota_limit || 5;
         document.getElementById('statQuotaRemaining').textContent = quota;
         document.getElementById('statQuotaText').textContent = `Limite: ${limit}/jour`;
 
@@ -894,7 +894,7 @@
 
     function loadSearchPage() {
       // Check if user can search
-      if (currentUser.plan === 'FREE' && (currentUser.quota_remaining || 0) <= 0) {
+      if (currentUser.plan === 'FREE' && (currentUser.quota?.remaining || currentUser.quota_remaining || 0) <= 0) {
         const alert = document.createElement('div');
         alert.className = 'alert alert-error';
         alert.textContent = '❌ Quota atteint - Upgrade pour continuer';
