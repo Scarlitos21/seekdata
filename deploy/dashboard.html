@@ -757,6 +757,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const token = sessionStorage.getItem('seekdata_token');
       if (!token) {
+        console.log('No token found, redirecting to login');
         window.location.href = '/login';
         return;
       }
@@ -766,16 +767,32 @@
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
+        const data = await res.json();
+        console.log('API /me response:', data, 'Status:', res.status);
+
         if (!res.ok) {
+          console.log('API error, removing token and redirecting to login');
           sessionStorage.removeItem('seekdata_token');
           window.location.href = '/login';
           return;
         }
 
-        const data = await res.json();
-        currentUser = data.user;
+        if (!data.user && data.ok) {
+          // Handle case where user data is in response but not nested
+          currentUser = data.user || data;
+        } else if (data.user) {
+          currentUser = data.user;
+        } else {
+          console.error('No user data in response:', data);
+          sessionStorage.removeItem('seekdata_token');
+          window.location.href = '/login';
+          return;
+        }
+
+        console.log('User loaded:', currentUser);
         initDashboard();
       } catch (e) {
+        console.error('Fetch error:', e);
         window.location.href = '/login';
       }
     });
